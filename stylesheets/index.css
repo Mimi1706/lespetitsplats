@@ -1,0 +1,47 @@
+header .logo {
+  justify-content: center;
+}
+header .logo img {
+  width: 15em;
+}
+header nav #search-wrapper {
+  background-color: #ececec;
+  border-radius: 0.2em;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+}
+header nav #search-wrapper .searchbar {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: transparent;
+  width: 95%;
+  border: none;
+  z-index: 1;
+}
+header nav #search-wrapper #search-button {
+  border: none;
+  width: 5%;
+  border-radius: 0 0.2em 0.2em 0;
+}
+
+body {
+  padding: 2em 4em;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 2em;
+  }
+
+  header nav #search-wrapper .searchbar {
+    width: 90%;
+  }
+  header nav #search-wrapper #search-button {
+    width: 10%;
+  }
+}
+
+/*# sourceMappingURL=index.css.map */
