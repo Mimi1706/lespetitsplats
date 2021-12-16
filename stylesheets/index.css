@@ -4,15 +4,19 @@ header .logo {
 header .logo img {
   width: 15em;
 }
-header nav #search-wrapper {
+header .container nav {
+  padding: 0px;
+}
+header .container nav #search_wrapper {
   background-color: #ececec;
   border-radius: 0.2em;
   width: 100%;
   margin: 0;
+  margin-bottom: 1em;
   display: flex;
   justify-content: space-between;
 }
-header nav #search-wrapper .searchbar {
+header .container nav #search_wrapper #searchbar {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -21,10 +25,132 @@ header nav #search-wrapper .searchbar {
   border: none;
   z-index: 1;
 }
-header nav #search-wrapper #search-button {
+header .container nav #search_wrapper #search_button {
   border: none;
   width: 5%;
   border-radius: 0 0.2em 0.2em 0;
+}
+header .container #dropdown_filters #filter_dropdown {
+  border-radius: 0.2em;
+  border: none;
+  padding: 0;
+}
+header .container #dropdown_filters #filter_dropdown #ingredients_filter {
+  background-color: #3282F7;
+  text-overflow: ellipsis;
+  color: white;
+  width: 100%;
+  text-align: left;
+  border: none;
+  padding: 1em;
+}
+header .container #dropdown_filters #filter_dropdown #appareil_filter {
+  background-color: #68D9A4;
+  text-overflow: ellipsis;
+  color: white;
+  width: 100%;
+  text-align: left;
+  border: none;
+  padding: 1em;
+}
+header .container #dropdown_filters #filter_dropdown #ustensils_filter {
+  background-color: #ED6454;
+  text-overflow: ellipsis;
+  color: white;
+  width: 100%;
+  text-align: left;
+  border: none;
+  padding: 1em;
+}
+header .container #dropdown_filters #filter_dropdown .menu_arrow {
+  color: white;
+  align-items: center;
+  position: absolute;
+  right: 25px;
+  top: 0;
+  height: 100%;
+  display: flex;
+  pointer-events: none;
+}
+header .container #dropdown_filters #filter_dropdown .menu_arrow .fas {
+  position: absolute;
+  justify-content: center;
+  font-size: 1.2em;
+}
+header .container #dropdown_filters #filter_dropdown .menu_arrow .fa-chevron-up {
+  display: none;
+}
+header .container #dropdown_filters #filter_dropdown #ingredients_dropdown_menu {
+  background-color: #3282F7;
+}
+header .container #dropdown_filters #filter_dropdown #appareil_dropdown_menu {
+  background-color: #68D9A4;
+}
+header .container #dropdown_filters #filter_dropdown #ustensils_dropdown_menu {
+  background-color: #ED6454;
+}
+header .container #dropdown_filters #filter_dropdown input::placeholder {
+  opacity: 1;
+}
+header .container #dropdown_filters #filter_dropdown .dropdown-multicol {
+  width: auto;
+  padding: 0;
+  margin: 0;
+  margin-top: -3px;
+  border: none;
+  border-radius: 0;
+  width: 100%;
+  padding-bottom: 1em;
+}
+header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col {
+  width: 100%;
+}
+header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item {
+  color: white;
+}
+header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item:hover {
+  color: black;
+}
+
+main .container #recipe_deck {
+  margin-right: -30px;
+  margin-left: -30px;
+}
+main .container #recipe_deck #recipe_card {
+  height: 20em;
+  overflow: hidden;
+  border: none;
+}
+main .container #recipe_deck #recipe_card #recipe_image {
+  height: 9em;
+  background-color: #C7BEBE;
+  border: none;
+  border-radius: 0.2em 0.2em 0 0;
+}
+main .container #recipe_deck #recipe_card .card-body {
+  padding: 1em;
+  background-color: #E7E7E7;
+}
+main .container #recipe_deck #recipe_card .card-body .card-title {
+  font-size: 0.9em;
+}
+main .container #recipe_deck #recipe_card .card-body #recipe_time {
+  text-align: right;
+}
+main .container #recipe_deck #recipe_card .card-body #recipe_ingredients {
+  font-size: 0.7em;
+}
+main .container #recipe_deck #recipe_card .card-body #recipe_description {
+  font-size: 0.6em;
+  line-height: 1em;
+  height: 7em;
+  overflow: hidden;
+  width: 100%;
+}
+main .container #recipe_deck #recipe_card .card-body ul {
+  font-size: 0.6em;
+  line-height: 1.1em;
+  list-style: none;
 }
 
 body {
@@ -36,10 +162,10 @@ body {
     padding: 2em;
   }
 
-  header nav #search-wrapper .searchbar {
+  header .container nav #search_wrapper #searchbar {
     width: 90%;
   }
-  header nav #search-wrapper #search-button {
+  header .container nav #search_wrapper #search_button {
     width: 10%;
   }
 }

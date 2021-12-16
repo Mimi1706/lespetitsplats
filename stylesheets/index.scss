@@ -1,5 +1,15 @@
-// Header - Desktop version
+// General
 
+@mixin button_filter_style {
+    text-overflow: ellipsis;
+    color: white;
+    width: 100%;
+    text-align: left;
+    border: none;
+    padding: 1em;
+}
+
+// Header - Desktop version
 header{
     
     .logo{
@@ -11,31 +21,176 @@ header{
         }
     }
 
-    nav{
+    .container{
 
-        #search-wrapper{
+        nav{
+            padding: 0px;
 
-            background-color: rgb(236, 236, 236);
-            border-radius: 0.2em;
-            width: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: space-between;
+            #search_wrapper{
 
-            .searchbar{
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-                background-color: transparent;
-                width: 95%;
-                border: none;
-                z-index: 1;
+                background-color: rgb(236, 236, 236);
+                border-radius: 0.2em;
+                width: 100%;
+                margin: 0;
+                margin-bottom: 1em;
+                display: flex;
+                justify-content: space-between;
+
+                #searchbar{
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    background-color: transparent;
+                    width: 95%;
+                    border: none;
+                    z-index: 1;
+                }
+                
+                #search_button{
+                    border: none;
+                    width: 5%;
+                    border-radius: 0 0.2em 0.2em 0;
+                }
             }
-            
-            #search-button{
+        }
+
+        #dropdown_filters{
+
+            #filter_dropdown{
+                border-radius: 0.2em;
                 border: none;
-                width: 5%;
-                border-radius: 0 0.2em 0.2em 0;
+                padding:0;
+
+                #ingredients_filter{
+                    background-color: #3282F7;
+                    @include button_filter_style;
+
+                }
+
+                #appareil_filter{
+                    background-color: #68D9A4;
+                    @include button_filter_style;
+                }
+
+                #ustensils_filter{
+                    background-color: #ED6454;
+                    @include button_filter_style;
+                }
+
+                .menu_arrow{
+                    color: white;
+                    align-items: center;
+                    position: absolute;
+                    right:25px;
+                    top:0;
+                    height: 100%;
+                    display: flex;
+                    pointer-events: none;
+
+                    .fas{
+                        position: absolute;
+                        justify-content: center;
+                        font-size: 1.2em;
+                    }
+
+                    .fa-chevron-up{
+                        display: none;
+                    }
+                }
+
+                #ingredients_dropdown_menu{
+                    background-color: #3282F7;
+                }
+
+                #appareil_dropdown_menu{
+                    background-color: #68D9A4;
+                }
+
+                #ustensils_dropdown_menu{
+                    background-color: #ED6454;
+                }
+
+                input::placeholder{
+                    opacity: 1;
+                }
+
+                .dropdown-multicol{
+                    width: auto;
+                    padding:0;
+                    margin:0;
+                    margin-top:-3px;
+                    border: none;
+                    border-radius: 0;
+                    width: 100%;
+                    padding-bottom:1em;
+
+                    .dropdown-col{ 
+                        width: 100%;
+
+                        .dropdown-item{
+                            color:white;
+                        }
+
+                        .dropdown-item:hover{
+                            color:black;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+main{
+
+    .container{
+
+        #recipe_deck{
+            margin-right: -30px;
+            margin-left: -30px;
+                
+            #recipe_card{
+                height: 20em;
+                overflow: hidden;
+                border:none;
+
+                #recipe_image{
+                    height: 9em;
+                    background-color:#C7BEBE;
+                    border: none;
+                    border-radius: 0.2em 0.2em 0 0;
+                }
+
+                .card-body{
+                    padding: 1em;
+                    background-color: #E7E7E7;
+
+                    .card-title{
+                        font-size: 0.9em; 
+                    }
+
+                    #recipe_time{
+                        text-align: right;
+                    }
+
+                    #recipe_ingredients{
+                        font-size: 0.7em;
+                    }
+
+                    #recipe_description{
+                        font-size: 0.6em;
+                        line-height: 1em;
+                        height: 7em;
+                        overflow: hidden;
+                        width: 100%;
+                    }
+
+                    ul{
+                        font-size:0.6em;
+                        line-height: 1.1em;
+                        list-style: none;
+                    }
+                }
             }
         }
     }
@@ -55,16 +210,19 @@ body{
 
     header{
     
-        nav{
-    
-            #search-wrapper{
-    
-                .searchbar{
-                    width: 90%;
-                }
-                
-                #search-button{
-                    width: 10%;
+        .container{
+
+            nav{
+        
+                #search_wrapper{
+        
+                    #searchbar{
+                        width: 90%;
+                    }
+                    
+                    #search_button{
+                        width: 10%;
+                    }
                 }
             }
         }
