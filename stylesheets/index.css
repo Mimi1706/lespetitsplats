@@ -109,7 +109,7 @@ header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdow
   color: white;
 }
 header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item:hover {
-  color: black;
+  color: grey;
 }
 
 main .container #recipe_deck {

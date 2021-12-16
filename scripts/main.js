@@ -16,6 +16,7 @@ recipes.forEach(
 
 const allIngredients = arrayOfIngredients.map(thisRecipeIngredients => thisRecipeIngredients.map(ingredients => ingredients.ingredient));
 
+// Ajout des recettes
 let recipesSection = $('#recipe_deck')
     recipes.forEach(recipe => {
 
@@ -40,7 +41,8 @@ let recipesSection = $('#recipe_deck')
 
     </div>
     `);
-
+    
+    // Ajout des ingrédients de chaque recette
     recipe.ingredients.forEach(ingredient =>{
         $(`#recipe_ingredients_${recipe.id}`).append(`
         <li><b>${ingredient.ingredient}</b>: ${ingredient.quantity ? ingredient.quantity : ''} ${ingredient.unit ? ingredient.unit : ''}</li>`)
