@@ -1,21 +1,5 @@
 import { recipes } from "./recipes.js";
 
-let arrayOfIngredients = [];
-let arrayOfAppareils = [];
-let arrayOfUstensils = [];
-let arrayOfRecipesNames = [];
-
-recipes.forEach(
-    recipe => {
-        arrayOfIngredients.push(recipe.ingredients)
-        arrayOfAppareils.push(recipe.appliance)
-        arrayOfUstensils.push(recipe.ustensils)
-        arrayOfRecipesNames.push(recipe.name)
-    }
-)
-
-const allIngredients = arrayOfIngredients.map(thisRecipeIngredients => thisRecipeIngredients.map(ingredients => ingredients.ingredient));
-
 // Ajout des recettes
 let recipesSection = $('#recipe_deck')
     recipes.forEach(recipe => {
@@ -49,3 +33,20 @@ let recipesSection = $('#recipe_deck')
     })
 
 })
+
+
+let arrayOfIngredients = [];
+let arrayOfAppareils = [];
+let arrayOfUstensils = [];
+let arrayOfRecipesNames = [];
+
+recipes.forEach(
+    recipe => {
+        arrayOfIngredients.push(recipe.ingredients)
+        arrayOfAppareils.push(recipe.appliance)
+        arrayOfUstensils.push(recipe.ustensils)
+        arrayOfRecipesNames.push(recipe.name)
+    }
+)
+
+const allIngredients = arrayOfIngredients.map(thisRecipeIngredients => thisRecipeIngredients.map(ingredients => ingredients.ingredient));
