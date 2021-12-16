@@ -112,49 +112,48 @@ header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdow
   color: grey;
 }
 
+body {
+  padding: 2em 0em;
+}
+
 main .container #recipe_deck {
   margin-right: -30px;
   margin-left: -30px;
 }
 main .container #recipe_deck #recipe_card {
-  height: 20em;
-  overflow: hidden;
+  height: auto;
   border: none;
+  margin-bottom: 2em;
 }
 main .container #recipe_deck #recipe_card #recipe_image {
-  height: 9em;
+  height: 10em;
   background-color: #C7BEBE;
   border: none;
   border-radius: 0.2em 0.2em 0 0;
 }
 main .container #recipe_deck #recipe_card .card-body {
-  padding: 1em;
+  padding: 0.5em 1em;
   background-color: #E7E7E7;
+  height: auto;
+  border-radius: 0 0 0.2em 0.2em;
 }
 main .container #recipe_deck #recipe_card .card-body .card-title {
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 main .container #recipe_deck #recipe_card .card-body #recipe_time {
   text-align: right;
-}
-main .container #recipe_deck #recipe_card .card-body #recipe_ingredients {
-  font-size: 0.7em;
+  font-size: 0.9em;
 }
 main .container #recipe_deck #recipe_card .card-body #recipe_description {
-  font-size: 0.6em;
+  font-size: 0.7em;
   line-height: 1em;
-  height: 7em;
+  height: 10em;
   overflow: hidden;
-  width: 100%;
 }
 main .container #recipe_deck #recipe_card .card-body ul {
   font-size: 0.6em;
   line-height: 1.1em;
   list-style: none;
-}
-
-body {
-  padding: 2em 4em;
 }
 
 @media (max-width: 769px) {

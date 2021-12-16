@@ -141,6 +141,11 @@ header{
     }
 }
 
+// Body - Desktop version
+body{
+    padding: 2em 0em;
+}
+
 main{
 
     .container{
@@ -150,39 +155,37 @@ main{
             margin-left: -30px;
                 
             #recipe_card{
-                height: 20em;
-                overflow: hidden;
+                height: auto;
                 border:none;
+                margin-bottom: 2em;
 
                 #recipe_image{
-                    height: 9em;
+                    height: 10em;
                     background-color:#C7BEBE;
                     border: none;
                     border-radius: 0.2em 0.2em 0 0;
                 }
 
                 .card-body{
-                    padding: 1em;
+                    padding: 0.5em 1em;
                     background-color: #E7E7E7;
+                    height: auto;
+                    border-radius: 0 0 0.2em 0.2em;
 
                     .card-title{
-                        font-size: 0.9em; 
+                        font-size: 0.8em;
                     }
 
                     #recipe_time{
                         text-align: right;
-                    }
-
-                    #recipe_ingredients{
-                        font-size: 0.7em;
+                        font-size: 0.9em;
                     }
 
                     #recipe_description{
-                        font-size: 0.6em;
+                        font-size: 0.7em;
                         line-height: 1em;
-                        height: 7em;
+                        height: 10em;
                         overflow: hidden;
-                        width: 100%;
                     }
 
                     ul{
@@ -194,11 +197,6 @@ main{
             }
         }
     }
-}
-
-// Body - Desktop version
-body{
-    padding: 2em 4em;
 }
 
 // Smartphone version
