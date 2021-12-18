@@ -1,5 +1,4 @@
 // General
-
 @mixin button_filter_style {
     text-overflow: ellipsis;
     color: white;
@@ -28,33 +27,33 @@ header{
 
             #search_wrapper{
 
-                background-color: rgb(236, 236, 236);
+                background-color: #E7E7E7;
                 border-radius: 0.2em;
                 width: 100%;
                 margin: 0;
-                margin-bottom: 1em;
                 display: flex;
                 justify-content: space-between;
 
-                #searchbar{
+                #search_input{
+                    background-color: transparent;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     overflow: hidden;
                     background-color: transparent;
                     width: 95%;
                     border: none;
-                    z-index: 1;
+                    z-index:1;
                 }
                 
-                #search_button{
-                    border: none;
-                    width: 5%;
-                    border-radius: 0 0.2em 0.2em 0;
+                .fa-search{
+                    align-self: center;
+                    margin-right: 0.5em;
                 }
             }
         }
 
         #dropdown_filters{
+            margin-top:1em;
 
             #filter_dropdown{
                 border-radius: 0.2em;
@@ -169,7 +168,7 @@ main{
                 .card-body{
                     padding: 0.5em 1em;
                     background-color: #E7E7E7;
-                    height: auto;
+                    height: 10em;
                     border-radius: 0 0 0.2em 0.2em;
 
                     .card-title{
@@ -184,14 +183,16 @@ main{
                     }
 
                     #recipe_description{
-                        font-size: 0.7em;
-                        line-height: 1em;
-                        height: 10em;
                         overflow: hidden;
+                        display: -webkit-box;
+                        -webkit-line-clamp:5;
+                        -webkit-box-orient: vertical;
+                        font-size: xx-small;
+                        height: 7.5em;
                     }
 
                     ul{
-                        font-size:0.6em;
+                        font-size:0.55em;
                         line-height: 1.1em;
                         list-style: none;
                     }
