@@ -58,14 +58,10 @@ searchInput.onkeyup = (e)=>{
                 allIngredients.push(ingredient.ingredient.toLowerCase())
             })
 
-            // Initialise la liste d'ustensils
-            let allUstensils = recipe.ustensils.flat()
-
             // Pour chaque recette qui valide les conditions suivantes:
             if(
                 recipe.name.toLowerCase().includes(userData) ||
-                recipe.appliance.toLowerCase().includes(userData) ||
-                allUstensils.join(' ').includes(userData) ||
+                recipe.description.toLowerCase().includes(userData) ||
                 allIngredients.join(' ').includes(userData)
             ){  
 

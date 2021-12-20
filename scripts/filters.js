@@ -35,7 +35,6 @@ for(let i =0; i<document.querySelectorAll('#recipe_card').length;i++){
                         
                         let ustensilsList = $('#ustensils')
                         ustensilsList.append(`<a class="dropdown-item" data-id="${recipe.id}" id="ustensil_item">${ustensil}</a>`)
-
                     }
                 )
 
