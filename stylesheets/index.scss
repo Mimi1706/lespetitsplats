@@ -8,6 +8,10 @@
     padding: 1em;
 }
 
+.hidden{
+    display: none;
+}
+
 // Header - Desktop version
 header{
     
@@ -40,14 +44,17 @@ header{
                     white-space: nowrap;
                     overflow: hidden;
                     background-color: transparent;
-                    width: 95%;
+                    width: 100%;
                     border: none;
                     z-index:1;
+                    padding-right: 5em;
                 }
                 
                 .fa-search{
                     align-self: center;
                     margin-right: 0.5em;
+                    position: absolute;
+                    right: 0;
                 }
             }
         }
@@ -198,6 +205,10 @@ main{
                     }
                 }
             }
+        }
+
+        #no_result{
+            text-align: center;
         }
     }
 }

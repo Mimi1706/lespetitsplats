@@ -1,3 +1,7 @@
+.hidden {
+  display: none;
+}
+
 header .logo {
   justify-content: center;
 }
@@ -21,13 +25,16 @@ header .container nav #search_wrapper #search_input {
   white-space: nowrap;
   overflow: hidden;
   background-color: transparent;
-  width: 95%;
+  width: 100%;
   border: none;
   z-index: 1;
+  padding-right: 5em;
 }
 header .container nav #search_wrapper .fa-search {
   align-self: center;
   margin-right: 0.5em;
+  position: absolute;
+  right: 0;
 }
 header .container #dropdown_filters {
   margin-top: 1em;
@@ -160,6 +167,9 @@ main .container #recipe_deck #recipe_card .card-body ul {
   font-size: 0.55em;
   line-height: 1.1em;
   list-style: none;
+}
+main .container #no_result {
+  text-align: center;
 }
 
 @media (max-width: 769px) {
