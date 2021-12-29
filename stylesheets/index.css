@@ -40,8 +40,6 @@ header .container #dropdown_filters {
   margin-top: 1em;
 }
 header .container #dropdown_filters #filter_dropdown {
-  border-radius: 0.2em;
-  border: none;
   padding: 0;
 }
 header .container #dropdown_filters #filter_dropdown #ingredients_filter {
@@ -89,36 +87,54 @@ header .container #dropdown_filters #filter_dropdown .menu_arrow .fas {
 header .container #dropdown_filters #filter_dropdown .menu_arrow .fa-chevron-up {
   display: none;
 }
+header .container #dropdown_filters #filter_dropdown .dropdown-menu {
+  height: 100%;
+}
 header .container #dropdown_filters #filter_dropdown #ingredients_dropdown_menu {
   background-color: #3282F7;
+  height: 0;
 }
 header .container #dropdown_filters #filter_dropdown #appareil_dropdown_menu {
   background-color: #68D9A4;
+  height: 0;
 }
 header .container #dropdown_filters #filter_dropdown #ustensils_dropdown_menu {
   background-color: #ED6454;
+  height: 0;
 }
 header .container #dropdown_filters #filter_dropdown input::placeholder {
   opacity: 1;
 }
 header .container #dropdown_filters #filter_dropdown .dropdown-multicol {
-  width: auto;
   padding: 0;
   margin: 0;
-  margin-top: -3px;
+  margin-top: -5px;
   border: none;
-  border-radius: 0;
   width: 100%;
   padding-bottom: 1em;
 }
 header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col {
-  width: 100%;
+  width: 195%;
+  flex-wrap: wrap;
+  background-color: inherit;
+  padding: 1em 0em;
+  border-radius: 0.2em;
 }
 header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item {
   color: white;
+  width: 33.333333%;
+  flex-wrap: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  padding: 0.2em 1em;
 }
 header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item:hover {
   color: grey;
+}
+header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item:active {
+  color: white;
+  background-color: inherit;
 }
 
 body {
@@ -172,7 +188,7 @@ main .container #no_result {
   text-align: center;
 }
 
-@media (max-width: 769px) {
+@media (max-width: 990px) {
   body {
     padding: 2em;
   }
@@ -182,6 +198,15 @@ main .container #no_result {
   }
   header .container nav #search_wrapper #search_button {
     width: 10%;
+  }
+  header .container #dropdown_filters #filter_dropdown .dropdown-multicol {
+    width: 100%;
+  }
+  header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col {
+    width: 100%;
+  }
+  header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item {
+    width: 50%;
   }
 }
 

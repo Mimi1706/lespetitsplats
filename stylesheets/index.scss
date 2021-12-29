@@ -63,8 +63,6 @@ header{
             margin-top:1em;
 
             #filter_dropdown{
-                border-radius: 0.2em;
-                border: none;
                 padding:0;
 
                 #ingredients_filter{
@@ -104,16 +102,23 @@ header{
                     }
                 }
 
+                .dropdown-menu{
+                    height: 100%;
+                }
+
                 #ingredients_dropdown_menu{
                     background-color: #3282F7;
+                    height: 0;
                 }
 
                 #appareil_dropdown_menu{
                     background-color: #68D9A4;
+                    height: 0;
                 }
 
                 #ustensils_dropdown_menu{
                     background-color: #ED6454;
+                    height: 0;
                 }
 
                 input::placeholder{
@@ -121,24 +126,37 @@ header{
                 }
 
                 .dropdown-multicol{
-                    width: auto;
                     padding:0;
                     margin:0;
-                    margin-top:-3px;
+                    margin-top:-5px;
                     border: none;
-                    border-radius: 0;
                     width: 100%;
                     padding-bottom:1em;
 
                     .dropdown-col{ 
-                        width: 100%;
+                        width: 195%;
+                        flex-wrap: wrap;
+                        background-color:inherit;
+                        padding:1em 0em;
+                        border-radius: 0.2em;
 
                         .dropdown-item{
                             color:white;
+                            width: 33.333333%;
+                            flex-wrap: wrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            cursor: pointer;
+                            padding: 0.2em 1em;
                         }
 
                         .dropdown-item:hover{
                             color:grey;
+                        }
+
+                        .dropdown-item:active{
+                            color:white;
+                            background-color:inherit;
                         }
                     }
                 }
@@ -214,7 +232,7 @@ main{
 }
 
 // Smartphone version
-@media(max-width:769px){
+@media(max-width:990px){
 
     body{
         padding: 2em;
@@ -234,6 +252,24 @@ main{
                     
                     #search_button{
                         width: 10%;
+                    }
+                }
+            }
+
+            #dropdown_filters{
+    
+                #filter_dropdown{
+    
+                    .dropdown-multicol{
+                        width: 100%;
+    
+                        .dropdown-col{ 
+                            width: 100%;
+    
+                            .dropdown-item{
+                                width: 50%;
+                            }
+                        }
                     }
                 }
             }
