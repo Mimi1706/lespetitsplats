@@ -42,7 +42,7 @@ recipes.forEach(recipe => {
         ustensil =>{
             
             let ustensilsList = $('#ustensils')
-            ustensilsList.append(`<a class="dropdown-item" data-id="${recipe.id}" id="ustensil_item">${ustensil}</a>`)
+            ustensilsList.append(`<a class="dropdown-item" id="ustensil_item">${ustensil}</a>`)
         }
     )
 })
@@ -53,16 +53,26 @@ document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient => {
     ingredientsList.append(`<a class="dropdown-item" id="ingredient_item">`+ingredient.innerText+`</a>`)
 })
 
-// À chaque activation d'une touche du clavier
-let searchInput = document.querySelector('#search_input')
-searchInput.onkeyup = (e)=>{
+// Fonction de mise à jour des cartes présentes sur la page 
+function currentRecipes (allCardsRecipesArray){
+    let allCardRecipes = document.querySelectorAll('#recipe_card')
+    allCardRecipes.forEach(recipe => {
+
+        if(!recipe.classList.contains('hidden')){
+            allCardsRecipesArray.push(recipe.dataset.id)
+        }
+    })
+    return allCardsRecipesArray
+}
+
+// BARRE DE RECHERCHE PRINCIPALE
+let mainSearchBar = document.querySelector('#search_input')
+mainSearchBar.onkeyup = (e)=>{
 
     document.getElementById('no_result').classList.add('hidden')
     
     let userData = e.target.value; // Entrée de l'utilisateur
     let recipeCards = document.querySelectorAll('#recipe_card')
-    let resultsCardsId = []
-
     let recipeSection = document.getElementById('recipe_deck')
 
     // Recherche déclenchée à partir de 3 caractères
@@ -89,99 +99,123 @@ searchInput.onkeyup = (e)=>{
                 allIngredients.join(' ').includes(userData)
             ){  
 
-                // Sélectionne les recettes suivantes
+                // Sélectionne les recettes suivantes:
                 for(let i =0; i<recipeCards.length;i++){
                     
-                    // Vérifie que l'id de la recette corresponde à l'id de la recette qui valide les conditions
+                    // Vérifie que l'id de la recette corresponde à l'id de la recette et cache celles dont l'id ne correspond pas
                     if(recipe.id == recipeCards[i].dataset.id){
                         recipeCards[i].classList.remove('hidden')
-                        resultsCardsId.push(recipeCards[i].dataset.id)
                     }
                 }
             }
         }
 
-        // Si la section de recettes est vide (càd aucun match de recettes)
+        // Si la section de recettes est vide (càd aucun match de recettes), le message es
         if(recipeSection.innerText == ''){
             document.getElementById('no_result').classList.remove('hidden')
         }
-    } else if (userData.length<=2){
+    }
+
+    // Si la recherche fait moins de 2 caractères, toutes les recettes sont réapparaissent
+    else if (userData.length<=2){
         for(let i =0; i<recipeCards.length;i++){
             recipeCards[i].classList.remove('hidden')
         }
     }
+}
 
-    // Filtres
+// FILTRES 
+// Filtre d'ingrédient
+let ingredientFilter = document.querySelector('#ingredients_filter')
+ingredientFilter.addEventListener ('click', e =>{
 
-    // Filtre d'ingrédients
-    let searchIngredientInput = document.querySelector('#ingredients_filter')
-    searchIngredientInput.addEventListener ('click', e =>{
+    // Récupération de l'id des recettes présentes
+    let allCardsRecipesArray = []
+    currentRecipes(allCardsRecipesArray)
 
-        let ingredientList = document.querySelectorAll('#ingredient_item');
-        for(let ingredient of ingredientList){
-            ingredient.classList.add('hidden')
-        }
+    // Cache tous les ingrédients de a liste du filtre d'ingrédient
+    let ingredientList = document.querySelectorAll('#ingredient_item');
+    for(let ingredient of ingredientList){
+        ingredient.classList.add('hidden')
+        ingredient.classList.remove('ingredient_filter_on')
+    }
+    
+    // N'affiche dans le filtre que les ingrédients présents dans les recettes de la page
+    let allCardRecipes = document.querySelectorAll('#recipe_card')
+    allCardRecipes.forEach(card => {
 
-        // N'affiche que les ingrédients présents dans les recettes de la page
-        recipeCards.forEach(card => {
+        if(allCardsRecipesArray.indexOf(card.dataset.id)>-1){
+            card.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
 
-            if(resultsCardsId.indexOf(card.dataset.id)>-1){
-                card.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
-
-                    for( let i=0; i<ingredientList.length; i++){
-                        
-                        if(ingredient.textContent === ingredientList[i].textContent){
-                            ingredientList[i].classList.remove('hidden')
-                        }
+                for( let i=0; i<ingredientList.length; i++){
+                    
+                    if(ingredient.textContent === ingredientList[i].textContent){
+                        ingredientList[i].classList.remove('hidden')
+                        ingredientList[i].classList.add('ingredient_filter_on')
                     }
-                })
-            }
-        })
-
-        // Barre de recherche du filtre d'ingredient
-        searchIngredientInput.onkeyup = (e)=>{
-            let userDataIngredient = e.target.value;
-            
-            let ingredientList = document.querySelectorAll('#ingredient_item');
-            ingredientList.forEach(ingredient =>{
-
-                if(!ingredient.textContent.toLowerCase().includes(userDataIngredient.toLowerCase())){
-                    ingredient.classList.add('hidden')
                 }
             })
         }
     })
+})
 
-    // Filtre d'appareils
-    let searchAppareilInput = document.querySelector('#appareil_filter')
-    searchAppareilInput.addEventListener ('click', e =>{
+// Barre de recherche du filtre d'ingredient
+ingredientFilter.onkeyup = (e)=>{
+    let userDataIngredient = e.target.value;
+    var key = e.keyCode
 
-        let appareilsList = document.querySelectorAll('#appareil_item');
-        for(let appareil of appareilsList){
-            appareil.classList.add('hidden')
+    let ingredientList = document.querySelectorAll('#ingredient_item');
+    ingredientList.forEach(ingredient =>{
+
+        if (key == 8 && ingredient.classList.contains('on')){
+            ingredient.classList.remove('hidden')
         }
 
-        // N'affiche que les appareils présents dans les recettes de la page
-        for(let recipe of recipes){
-
-            console.log(recipe.id)
-            console.log(resultsCardsId)
-            console.log(resultsCardsId.indexOf(recipe.id)>-1)
-        }
-
-        // Barre de recherche du filtre d'appareil
-        searchAppareilInput.onkeyup = (e)=>{
-            let userDataAppareil = e.target.value;
-            
-            let appareilsList = document.querySelectorAll('#appareil_item');
-            appareilsList.forEach(appareil =>{
-
-                if(!appareil.textContent.toLowerCase().includes(userDataAppareil.toLowerCase())){
-                    appareil.classList.add('hidden')
-                }
-            })
-        }
+        if(!ingredient.textContent.toLowerCase().includes(userDataIngredient.toLowerCase())){
+            ingredient.classList.add('hidden')
+        } 
     })
 }
 
-// Ajout des tags
+// Ajout du tag dans la liste de tags au clic sur un ingrédient de la liste du filtre d'ingrédient
+let ingredientList = document.querySelectorAll('#ingredient_item')
+ingredientList.forEach(ingredientItem => {
+    ingredientItem.addEventListener('click', e => {
+
+        ingredientItem.classList.add('on_tag')
+
+        let tagsList = $('#all_tags')
+        tagsList.append(`
+            <div id="ingredient_tag">`+ingredientItem.textContent+`<a id="close_tag"><i class="far fa-times-circle"></a></i><div>
+        `)
+
+        document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
+
+            if (ingredient.textContent.toLowerCase() == ingredientItem.textContent.toLowerCase()){
+                ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('ingredient_filter_on')
+            } 
+        })
+
+        document.querySelectorAll('#recipe_card').forEach(card =>{
+
+            if(!card.classList.contains('ingredient_filter_on')){
+                card.classList.add('hidden')
+            }
+        })
+
+        document.querySelectorAll('#close_tag').forEach(closeTag =>{
+            closeTag.addEventListener('click', e =>{
+                closeTag.parentNode.parentNode.removeChild(closeTag.parentNode)
+                ingredientItem.classList.remove('ingredient_filter_on')
+
+                document.querySelectorAll('#recipe_card').forEach(card =>{
+                    card.classList.remove('ingredient_filter_on')
+                    card.classList.remove('hidden')
+                })
+            })
+        })
+    })
+})
+
+let appareilFilter = document.querySelector('#appareil_filter')
+let ustensilFilter = document.querySelector('#ustensil_filter')

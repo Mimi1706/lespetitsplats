@@ -12,6 +12,15 @@
     display: none;
 }
 
+.on_tag{
+    display: none;
+}
+
+// Colors
+$ingredient : #3282F7;
+$appareil : #68D9A4;
+$ustensil : #ED6454;
+
 // Header - Desktop version
 header{
     
@@ -26,8 +35,9 @@ header{
 
     .container{
 
-        nav{
+        nav{    
             padding: 0px;
+            margin-bottom: 0.5em;
 
             #search_wrapper{
 
@@ -59,25 +69,54 @@ header{
             }
         }
 
+        #all_tags{
+            margin-bottom: 0.5em;
+
+            #ingredient_tag, #appareil_tag, #ustensil_tag{
+                width: auto;
+                padding: 0.5em 0em 0.5em 1em;
+                color: white;
+                border-radius: 0.3em;
+                margin-right: 0.5em;
+                margin-top:0.5em;
+            }
+
+            .fa-times-circle{
+                padding: 0em 1em;
+                cursor: pointer;
+            }
+
+            #ingredient_tag{
+                background-color: $ingredient;
+            }
+
+            #appareil_tag{
+                background-color: $appareil;
+            }
+
+            #ustensil_tag{
+                background-color: $ustensil;
+            }
+        }
+
         #dropdown_filters{
-            margin-top:1em;
 
             #filter_dropdown{
                 padding:0;
 
                 #ingredients_filter{
-                    background-color: #3282F7;
+                    background-color: $ingredient;
                     @include button_filter_style;
 
                 }
 
                 #appareil_filter{
-                    background-color: #68D9A4;
+                    background-color: $appareil;
                     @include button_filter_style;
                 }
 
                 #ustensils_filter{
-                    background-color: #ED6454;
+                    background-color: $ustensil;
                     @include button_filter_style;
                 }
 
@@ -107,17 +146,17 @@ header{
                 }
 
                 #ingredients_dropdown_menu{
-                    background-color: #3282F7;
+                    background-color: $ingredient;
                     height: 0;
                 }
 
                 #appareil_dropdown_menu{
-                    background-color: #68D9A4;
+                    background-color: $appareil;
                     height: 0;
                 }
 
                 #ustensils_dropdown_menu{
-                    background-color: #ED6454;
+                    background-color: $ustensil;
                     height: 0;
                 }
 
