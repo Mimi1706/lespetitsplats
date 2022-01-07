@@ -44,7 +44,7 @@ header .container nav #search_wrapper .fa-search {
 header .container #all_tags {
   margin-bottom: 0.5em;
 }
-header .container #all_tags #ingredient_tag, header .container #all_tags #appareil_tag, header .container #all_tags #ustensil_tag {
+header .container #all_tags #tag_item, header .container #all_tags #appareil_tag, header .container #all_tags #ustensil_tag {
   width: auto;
   padding: 0.5em 0em 0.5em 1em;
   color: white;
@@ -56,7 +56,7 @@ header .container #all_tags .fa-times-circle {
   padding: 0em 1em;
   cursor: pointer;
 }
-header .container #all_tags #ingredient_tag {
+header .container #all_tags #tag_item {
   background-color: #3282F7;
 }
 header .container #all_tags #appareil_tag {

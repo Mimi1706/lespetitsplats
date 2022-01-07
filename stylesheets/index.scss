@@ -72,7 +72,7 @@ header{
         #all_tags{
             margin-bottom: 0.5em;
 
-            #ingredient_tag, #appareil_tag, #ustensil_tag{
+            #tag_item, #appareil_tag, #ustensil_tag{
                 width: auto;
                 padding: 0.5em 0em 0.5em 1em;
                 color: white;
@@ -86,7 +86,7 @@ header{
                 cursor: pointer;
             }
 
-            #ingredient_tag{
+            #tag_item{
                 background-color: $ingredient;
             }
 
