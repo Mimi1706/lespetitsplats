@@ -97,7 +97,7 @@ mainSearchBar.onkeyup = (e)=>{
             }
         }
         
-        // Si la section de recettes est vide (càd aucun match de recettes), le message es
+        // Si la section de recettes est vide (càd aucun match de recettes), le message d'erreur s'affiche
         if(recipeSection.innerText == ''){
             document.getElementById('no_result').classList.remove('hidden')
         }
@@ -105,14 +105,28 @@ mainSearchBar.onkeyup = (e)=>{
 
     // Si la saisie fait moins de 2 caractères et qu'aucun filtre n'est utilisé, toutes les recettes sont affichées
     if (userData.length <=2 && !document.querySelector('#all_tags').hasChildNodes()){
+        
+
         for(let i =0; i<recipeCards.length;i++){
             recipeCards[i].classList.remove('hidden')
         }
+
+    // Si la saisie fait moins de 2 caractères mais qu'il y a des filtres utilisés
+    } else if (userData.length <=2 && document.querySelector('#all_tags').hasChildNodes()){
+        document.querySelector('#all_tags').childNodes.forEach(tagItem => {
+
+            // On compare les éléments actifs de la liste de tags avec tous les ingrédients des recettes et on affiche ceux qui possèdent un élement tag de la liste 
+            document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient => {
+                if(ingredient.textContent.toLowerCase().includes(tagItem.childNodes[0].textContent.toLowerCase())){
+                    ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.remove('hidden')
+                }
+            })
+        })
     }
 }
 
-// FILTRES 
-// Filtre d'ingrédient
+// FILTRES - FILTRE D'INGRÉDIENT
+// Gestion de l'affichage de la liste d'ingrédient présents dans les recettes de la page
 let ingredientFilter = document.querySelector('#ingredients_filter')
 ingredientFilter.addEventListener ('click', e =>{
 
@@ -120,11 +134,10 @@ ingredientFilter.addEventListener ('click', e =>{
     let allCardsRecipesArray = []
     currentRecipes(allCardsRecipesArray)
 
-    // Cache tous les ingrédients de a liste du filtre d'ingrédient
+    // Cache tous les ingrédients de la liste du filtre d'ingrédient
     let ingredientList = document.querySelectorAll('#ingredient_item');
     for(let ingredient of ingredientList){
         ingredient.classList.add('hidden')
-        ingredient.classList.remove('ingredient_filter_on')
     }
     
     // N'affiche dans le filtre que les ingrédients présents dans les recettes de la page
@@ -136,9 +149,9 @@ ingredientFilter.addEventListener ('click', e =>{
 
                 for( let i=0; i<ingredientList.length; i++){
                     
+                    // Si un ingrédient de la recette correspond à un ingrédient de la liste du filtre, on enlève la classe 'hidden'
                     if(ingredient.textContent === ingredientList[i].textContent){
                         ingredientList[i].classList.remove('hidden')
-                        ingredientList[i].classList.add('ingredient_filter_on')
                     }
                 }
             })
@@ -171,9 +184,11 @@ ingredientList.forEach(ingredientItem => {
 
         ingredientItem.classList.add('on_tag')
 
+        // Ajout des boutons de tags actifs dans la liste de tag
         let tagsList = $('#all_tags')
         tagsList.append(`<div id="tag_item">`+ingredientItem.textContent+`<a id="close_tag"><i class="far fa-times-circle"></a></i><div>`)
 
+        // Ajout d'un marqueur 'ingredient_filter_on' sur les recettes qui possèdent l'ingrédient correspondant à celui sélectionné dans le filtre
         document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
 
             if (ingredient.textContent.toLowerCase() == ingredientItem.textContent.toLowerCase()){
@@ -181,6 +196,7 @@ ingredientList.forEach(ingredientItem => {
             } 
         })
 
+        // Filtrage des recettes possédant le marqueur 'ingredient_filter_on' et suppression du marqueur après filtrage
         document.querySelectorAll('#recipe_card').forEach(card =>{
 
             if(!card.classList.contains('ingredient_filter_on')){
@@ -190,15 +206,64 @@ ingredientList.forEach(ingredientItem => {
             }
         })
 
+        // Bouton de fermeture des tags
         document.querySelectorAll('#close_tag').forEach(closeTag =>{
             closeTag.addEventListener('click', e =>{
 
-                closeTag.parentNode.parentNode.removeChild(closeTag.parentNode)
+                closeTag.parentNode.remove()
+                ingredientItem.classList.remove('on_tag')
+
+                // On récupère les élements actifs de la liste de tags
+                document.querySelector('#all_tags').childNodes.forEach(tagItem => {
+
+                    // On compare les éléments actifs de la liste de tags avec tous les ingrédients des recettes et on enlève affiche ceux qui possèdent un élement tag de la liste 
+                    document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient => {
+                        if(ingredient.textContent.toLowerCase().includes(tagItem.childNodes[0].textContent.toLowerCase())){
+                            ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.remove('hidden')
+                        }
+                    })
+                })
+
+                // Si la saisie fait moins de 2 caractères et qu'aucun filtre n'est utilisé, toutes les recettes sont affichées
+                let recipeCards = document.querySelectorAll('#recipe_card')
+                if (userData.length <=2 && !document.querySelector('#all_tags').hasChildNodes()){
+                    for(let i =0; i<recipeCards.length;i++){
+                        recipeCards[i].classList.remove('hidden')
+                    }
+                }
                 
             })
         })
     })
 })
 
+// FILTRES - FILTRE D'APPAREIL
+// Gestion de l'affichage de la liste d'ingrédient présents dans les recettes de la page
 let appareilFilter = document.querySelector('#appareil_filter')
+appareilFilter.addEventListener ('click', e =>{
+
+    // Récupération de l'id des recettes présentes
+    let allCardsRecipesArray = []
+    currentRecipes(allCardsRecipesArray)
+
+    for (let recipe of recipes){
+
+        if(allCardsRecipesArray.includes(recipe.id.toString())){
+
+            console.log(allCardsRecipesArray)
+            console.log(recipe.id)
+        
+            document.querySelectorAll('#appareil_item').forEach(appareilItem =>{
+
+                if(appareilItem.textContent.toLowerCase() != recipe.appliance.toLowerCase()){
+                    appareilItem.classList.add('hidden')
+                }
+
+            })
+            
+        }
+    }
+})
+
+
 let ustensilFilter = document.querySelector('#ustensil_filter')
