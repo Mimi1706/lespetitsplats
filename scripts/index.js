@@ -27,7 +27,7 @@ recipes.forEach(recipe => {
     })
 })
 
-// Ajout de toutes les suggestions d'appareils/d'ustensils dans leur filtre respectif
+// Ajout de toutes les suggestions d'appareils/d'ustensils/d'ingredients dans leur filtre respectif
 let appareilArray = []
 let ustensilArray = []
 let ingredientArray = []
@@ -54,7 +54,7 @@ let appareilArrayUnique = [...new Set(appareilArray)];
 let ustensilArrayUnique = [...new Set(ustensilArray)];
 let ingredientArrayUnique = [...new Set(ingredientArray)];
 
-// Ajout des éléments dans les listes de filtre
+// Ajout des éléments dans leur filtre respectif
 for (let i = 0; i< appareilArrayUnique.length; i++){
     let appareilsList = $('#appareils')
     appareilsList.append(`<a class="dropdown-item" id="appareil_item">`+appareilArrayUnique[i]+`</a>`)
