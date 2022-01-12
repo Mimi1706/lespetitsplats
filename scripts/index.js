@@ -489,12 +489,12 @@ let ustensilList = document.querySelectorAll('#ustensil_item')
 ustensilList.forEach(ustensilItem => {
     ustensilItem.addEventListener('click', e =>{
 
-        // le marqueur 'on_tag' masque l'appareil sélectionné de la liste du filtre
+        // le marqueur 'on_tag' masque l'ustensil sélectionné de la liste du filtre
         ustensilItem.classList.add('on_tag')
 
-        // au clic sur un appareil de la liste, un élement est généré dans la liste de tag
+        // au clic sur un ustensil de la liste, un élement est généré dans la liste de tag
         let tagsList = $('#all_tags')
-        tagsList.append(`<div id="ustensil_tag">`+ustensilItem.textContent+`<a id="close_appareil_tag"><i class="far fa-times-circle"></a></i><div>`)
+        tagsList.append(`<div id="ustensil_tag">`+ustensilItem.textContent+`<a id="close_ustensil_tag"><i class="far fa-times-circle"></a></i><div>`)
 
         // Récupère l'id des recettes présentes dans la page
         let allCardsRecipesArray = []
@@ -528,10 +528,10 @@ ustensilList.forEach(ustensilItem => {
         })
 
         // Bouton de fermeture des tags
-        document.querySelectorAll('#close_appareil_tag').forEach(closeTag => {
+        document.querySelectorAll('#close_ustensil_tag').forEach(closeTag => {
             closeTag.addEventListener('click', e =>{
 
-                closeTag.parentNode.remove() // Efface le tag de la liste de tags
+                closeTag.parentNode.remove() // Efface le tag de la liste de tags 
 
                 // Ré-affiche l'ustensil du tag dans la liste du filtre une fois le tag effacé
                 ustensilItem.classList.remove('on_tag')
