@@ -172,24 +172,6 @@ ingredientFilter.addEventListener ('click', e =>{
     })
 })
 
-// Barre de recherche du filtre d'ingredient
-ingredientFilter.onkeyup = (e)=>{
-    let userDataIngredient = e.target.value;
-    var key = e.keyCode
-
-    let ingredientList = document.querySelectorAll('#ingredient_item');
-    ingredientList.forEach(ingredient =>{
-
-        if (key == 8 && ingredient.classList.contains('on')){
-            ingredient.classList.remove('hidden')
-        }
-
-        if(!ingredient.textContent.toLowerCase().includes(userDataIngredient.toLowerCase())){
-            ingredient.classList.add('hidden')
-        } 
-    })
-}
-
 // Ajout du tag dans la liste de tags au clic sur un ingrédient de la liste du filtre d'ingrédient
 let ingredientList = document.querySelectorAll('#ingredient_item')
 ingredientList.forEach(ingredientItem => {
@@ -248,7 +230,7 @@ ingredientList.forEach(ingredientItem => {
                     for (let recipe of recipes){
 
                         // Si un élément de la liste des tags correspond à l'un des appareils ou ustensils du fichier recipe.js
-                        if(tagItem.textContent.toLowerCase().includes(recipe.appliance.toLowerCase()) || recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
+                        if(tagItem.textContent.toLowerCase().includes(recipe.appliance.toLowerCase()) && recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
 
                             // Récupère toutes les cartes de recettes
                             document.querySelectorAll('#recipe_card').forEach(card => {
@@ -280,6 +262,24 @@ ingredientList.forEach(ingredientItem => {
         }
     })
 })
+
+// Barre de recherche du filtre d'ingredient
+ingredientFilter.onkeyup = (e)=>{
+    let userDataIngredient = e.target.value;
+    var key = e.keyCode
+
+    let ingredientList = document.querySelectorAll('#ingredient_item');
+    ingredientList.forEach(ingredient =>{
+
+        if (key == 8 && ingredient.classList.contains('on_tag')){
+            ingredient.classList.remove('hidden')
+        }
+
+        if(!ingredient.textContent.toLowerCase().includes(userDataIngredient.toLowerCase())){
+            ingredient.classList.add('hidden')
+        } 
+    })
+}
 
 // FILTRES - FILTRE D'APPAREIL
 // Gestion de l'affichage de la liste d'appareil présents dans les recettes de la page
@@ -323,7 +323,7 @@ appareilFilter.onkeyup = (e)=>{
     let appareilFilter = document.querySelectorAll('#appareil_item');
     appareilFilter.forEach(appareil =>{
 
-        if (key == 8 && ingredient.classList.contains('on')){
+        if (key == 8 && ingredient.classList.contains('on_tag')){
             appareil.classList.remove('hidden')
         }
 
@@ -474,7 +474,7 @@ ustensilFilter.onkeyup = (e)=>{
     let ustensilFilter = document.querySelectorAll('#ustensil_item');
     ustensilFilter.forEach(ustensil =>{
 
-        if (key == 8 && ustensil.classList.contains('on')){
+        if (key == 8 && ustensil.classList.contains('on_tag')){
             ustensil.classList.remove('hidden')
         }
 
