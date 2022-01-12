@@ -230,7 +230,7 @@ ingredientList.forEach(ingredientItem => {
                     for (let recipe of recipes){
 
                         // Si un élément de la liste des tags correspond à l'un des appareils ou ustensils du fichier recipe.js
-                        if(tagItem.textContent.toLowerCase().includes(recipe.appliance.toLowerCase()) && recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
+                        if(tagItem.textContent.toLowerCase().includes(recipe.appliance.toLowerCase()) || recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
 
                             // Récupère toutes les cartes de recettes
                             document.querySelectorAll('#recipe_card').forEach(card => {
