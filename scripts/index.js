@@ -27,34 +27,44 @@ recipes.forEach(recipe => {
     })
 })
 
+// Majuscule sur le premier mot  
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 // Ajout de toutes les suggestions d'appareils/d'ustensils/d'ingredients dans leur filtre respectif
 let appareilArray = []
 let ustensilArray = []
 let ingredientArray = []
 
+// Récupère tous les ingrédients des recettes sur la page et les insère dans le tableau 'ingredientArray'
+document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient => {
+    ingredientArray.push(capitalizeFirstLetter(ingredient.textContent.toLowerCase()))
+})
+
 // Passe sur chaque recette
 recipes.forEach(recipe =>{
     // Insère chaque appareil dans le tableau 'appareilArray'
-    appareilArray.push(recipe.appliance)
+    appareilArray.push(capitalizeFirstLetter(recipe.appliance.toString().toLowerCase()))
 
     // Récupère tous les ustensils de chaque recette et les insère dans le tableau 'ustensilArray'
     let allUstensils = recipe.ustensils.flat()
     allUstensils.forEach(ustensil =>{
-        ustensilArray.push(ustensil)
+        ustensilArray.push(capitalizeFirstLetter(ustensil.toLowerCase()))
     })
 })
 
-// Récupère tous les ingrédients des recettes sur la page et les insère dans le tableau 'ingredientArray'
-document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient => {
-    ingredientArray.push(ingredient.textContent)
-})
-
 // On enlève les doublons des tableaux
+let ingredientArrayUnique = [...new Set(ingredientArray)];
 let appareilArrayUnique = [...new Set(appareilArray)];
 let ustensilArrayUnique = [...new Set(ustensilArray)];
-let ingredientArrayUnique = [...new Set(ingredientArray)];
 
 // Ajout des éléments dans leur filtre respectif
+for (let i = 0; i< ingredientArrayUnique.length; i++){
+    let ingredientsList = $('#ingredients')
+    ingredientsList.append(`<a class="dropdown-item" id="ingredient_item">`+ingredientArrayUnique[i]+`</a>`)
+}
+
 for (let i = 0; i< appareilArrayUnique.length; i++){
     let appareilsList = $('#appareils')
     appareilsList.append(`<a class="dropdown-item" id="appareil_item">`+appareilArrayUnique[i]+`</a>`)
@@ -63,11 +73,6 @@ for (let i = 0; i< appareilArrayUnique.length; i++){
 for (let i = 0; i< ustensilArrayUnique.length; i++){
     let ustensilsList = $('#ustensils')
     ustensilsList.append(`<a class="dropdown-item" id="ustensil_item">`+ustensilArrayUnique[i]+`</a>`)
-}
-
-for (let i = 0; i< ingredientArrayUnique.length; i++){
-    let ingredientsList = $('#ingredients')
-    ingredientsList.append(`<a class="dropdown-item" id="ingredient_item">`+ingredientArrayUnique[i]+`</a>`)
 }
 
 // Fonction de mise à jour des cartes présentes sur la page 
@@ -158,7 +163,7 @@ ingredientFilter.addEventListener ('click', e =>{
                 for( let i=0; i<ingredientList.length; i++){
                     
                     // Si un ingrédient de la recette correspond à un ingrédient de la liste du filtre, on enlève la classe 'hidden'
-                    if(ingredient.textContent === ingredientList[i].textContent){
+                    if(ingredient.textContent.toLowerCase() === ingredientList[i].textContent.toLowerCase()){
                         ingredientList[i].classList.remove('hidden')
                     }
                 }
@@ -300,7 +305,7 @@ appareilFilter.addEventListener ('click', e =>{
 
                     // Les appareils qui correspondent à la recettes sont ré-affichés
                     document.querySelectorAll('#appareil_item').forEach(appareilItem => {
-                        if(appareilItem.textContent == recipe.appliance){
+                        if(appareilItem.textContent.toLowerCase() == recipe.appliance.toLowerCase()){
                             appareilItem.classList.remove('hidden')
                         }
                     })
@@ -451,7 +456,7 @@ ustensilFilter.addEventListener('click', e =>{
                     // Les ustensils qui correspondent à la recettes sont ré-affichés
                     document.querySelectorAll('#ustensil_item').forEach(ustensilItem => {
 
-                        if(recipe.ustensils.includes(ustensilItem.textContent)){
+                        if(recipe.ustensils.includes(ustensilItem.textContent.toLowerCase())){
                             ustensilItem.classList.remove('hidden')
                         }
                     })
@@ -498,7 +503,7 @@ ustensilList.forEach(ustensilItem => {
         for (let recipe of recipes){
 
             // Compare l'id des recettes présentes avec celles des recettes du fichier recipe.js afin de retrouver le/les ustensil(s) respectif(s) de chaque recette 
-            if(allCardsRecipesArray.includes(recipe.id.toString()) && recipe.ustensils.includes(ustensilItem.textContent)){
+            if(allCardsRecipesArray.includes(recipe.id.toString()) && recipe.ustensils.join(' ').toLowerCase().includes(ustensilItem.textContent.toLowerCase())){
 
                 // Récupère toutes les cartes de recettes
                 document.querySelectorAll('#recipe_card').forEach(card => {
@@ -544,31 +549,12 @@ ustensilList.forEach(ustensilItem => {
                             ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.remove('hidden')
                         }
                     })
-    
+
                     // Tri des tags appareils et ustensils
                     for (let recipe of recipes){
 
                         // Si un élément de la liste des tags correspond à l'un des appareils ou ustensils du fichier recipe.js
                         if(tagItem.textContent.toLowerCase().includes(recipe.appliance.toLowerCase()) || recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
-
-                            // Récupère toutes les cartes de recettes
-                            document.querySelectorAll('#recipe_card').forEach(card => {
-    
-                                // Compare l'id des recettes avec celles des recettes du fichier recipe.js afin de retrouver l'appareil présent dans la liste des tags
-                                if (card.dataset.id == recipe.id.toString()){
-
-                                    // Montre la/les recette(s)
-                                    card.classList.remove('hidden')
-                                }
-                            })
-                        }
-                    }
-
-                    // Tri des tags appareils
-                    for (let recipe of recipes){
-
-                        // Si un élément de la liste des tags correspond à l'un des appareil du fichier recipe.js
-                        if(tagItem.textContent.toLowerCase().includes(recipe.appliance.toLowerCase())){
 
                             // Récupère toutes les cartes de recettes
                             document.querySelectorAll('#recipe_card').forEach(card => {
