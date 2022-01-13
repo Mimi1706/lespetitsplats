@@ -33,6 +33,8 @@ function capitalizeFirstLetter(string) {
 }
 
 // Ajout de toutes les suggestions d'appareils/d'ustensils/d'ingredients dans leur filtre respectif
+
+// Tableaux vides de stockage temporaire
 let appareilArray = []
 let ustensilArray = []
 let ingredientArray = []
@@ -54,7 +56,7 @@ recipes.forEach(recipe =>{
     })
 })
 
-// On enlève les doublons des tableaux
+// On enlève les doublons des tableaux et on les insère dans des nouveaux tableaux
 let ingredientArrayUnique = [...new Set(ingredientArray)];
 let appareilArrayUnique = [...new Set(appareilArray)];
 let ustensilArrayUnique = [...new Set(ustensilArray)];
@@ -75,7 +77,7 @@ for (let i = 0; i< ustensilArrayUnique.length; i++){
     ustensilsList.append(`<a class="dropdown-item" id="ustensil_item">`+ustensilArrayUnique[i]+`</a>`)
 }
 
-// Fonction de mise à jour des cartes présentes sur la page 
+// Fonction de récupération de l'id des cartes présentes dans la page
 function currentRecipes (allCardsRecipesArray){
     let allCardRecipes = document.querySelectorAll('#recipe_card')
     allCardRecipes.forEach(recipe => {
@@ -105,7 +107,7 @@ mainSearchBar.onkeyup = (e)=>{
         // Sélectionne toutes les recettes
         for(let recipeCard of recipeCards){
                             
-            // Vise uniquement les recettes qui ne sont pas cachées
+            // Vise uniquement les recettes qui ne sont pas cachées grâce à leur id
             if(allCardsRecipesArray.includes(recipeCard.dataset.id)){       
                 // Cache la recette si elle valide l'inverse des conditions suivantes: 
                 if(!(
@@ -139,7 +141,7 @@ mainSearchBar.onkeyup = (e)=>{
 }
 
 // FILTRES - FILTRE D'INGRÉDIENT
-// Gestion de l'affichage de la liste d'ingrédient présents dans les recettes de la page
+// Gestion de l'affichage des élements de la liste du filtre d'ingrédient
 let ingredientFilter = document.querySelector('#ingredients_filter')
 ingredientFilter.addEventListener ('click', e =>{
 
@@ -157,12 +159,13 @@ ingredientFilter.addEventListener ('click', e =>{
     let allCardRecipes = document.querySelectorAll('#recipe_card')
     allCardRecipes.forEach(card => {
 
+        // Vise uniquement les recettes présentes dans la page
         if(allCardsRecipesArray.indexOf(card.dataset.id)>-1){
             card.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
 
                 for( let i=0; i<ingredientList.length; i++){
                     
-                    // Si un ingrédient de la recette correspond à un ingrédient de la liste du filtre, on enlève la classe 'hidden'
+                    // On boucle sur les ingrédients de la liste pour retrouver les ingrédients de la carte recette pour les rendre visible
                     if(ingredient.textContent.toLowerCase() === ingredientList[i].textContent.toLowerCase()){
                         ingredientList[i].classList.remove('hidden')
                     }
@@ -172,19 +175,39 @@ ingredientFilter.addEventListener ('click', e =>{
     })
 })
 
-// Ajout du tag dans la liste de tags au clic sur un ingrédient de la liste du filtre d'ingrédient
+// Barre de recherche du filtre d'ingredient
+ingredientFilter.onkeyup = (e)=>{
+    let userDataIngredient = e.target.value; // Saisie de l'utilisateur
+    var key = e.keyCode
+
+    let ingredientList = document.querySelectorAll('#ingredient_item');
+    ingredientList.forEach(ingredient =>{
+
+        // À chaque fois que l'utilisateur appuie sur la touche 'effacer'
+        if (key == 8 && ingredient.classList.contains('on_tag')){
+            ingredient.classList.remove('hidden')
+        }
+
+        // Les élements qui ne correspondent pas avec la saisie de l'utilisateur sont cachés
+        if(!ingredient.textContent.toLowerCase().includes(userDataIngredient.toLowerCase())){
+            ingredient.classList.add('hidden')
+        } 
+    })
+}
+
+// Ajout d'un tag visuel au clic sur un élement de la liste du filtre d'ingrédient
 let ingredientList = document.querySelectorAll('#ingredient_item')
 ingredientList.forEach(ingredientItem => {
     ingredientItem.addEventListener('click', e => {
 
-        // le marqueur 'on_tag' masque l'ingrédient sélectionné de la liste du filtre
+        // le marqueur 'on_tag' masque l'élément sélectionné de la liste du filtre
         ingredientItem.classList.add('on_tag')
 
-        // au clic sur un ingrédient de la liste, un élement est généré dans la liste de tag
+        // au clic sur un élément de la liste, un tag visuel est généré et stocké dans la liste des tags
         let tagsList = $('#all_tags')
         tagsList.append(`<div id="ingredient_tag">`+ingredientItem.textContent+`<a id="close_ingredient_tag"><i class="far fa-times-circle"></a></i><div>`)
 
-        // Ajout d'un marqueur 'ingredient_filter_on' sur les recettes qui possèdent l'ingrédient correspondant à celui sélectionné dans le filtre
+        // Ajout d'un marqueur 'ingredient_filter_on' sur les recettes qui possèdent l'élément ingrédient sélectionné
         document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
 
             if (ingredient.textContent.toLowerCase() == ingredientItem.textContent.toLowerCase()){
@@ -192,7 +215,7 @@ ingredientList.forEach(ingredientItem => {
             } 
         })
 
-        // Filtrage des recettes possédant le marqueur 'ingredient_filter_on' et suppression du marqueur après filtrage
+        // Garde les recettes possédant le marqueur 'ingredient_filter_on' et suppression du marqueur après filtrage
         document.querySelectorAll('#recipe_card').forEach(card =>{
 
             if(!card.classList.contains('ingredient_filter_on')){
@@ -206,12 +229,12 @@ ingredientList.forEach(ingredientItem => {
         document.querySelectorAll('#close_ingredient_tag').forEach(closeTag => {
             closeTag.addEventListener('click', e =>{
 
-                closeTag.parentNode.remove() // Efface le tag de la liste de tags 
+                closeTag.parentNode.remove() // Efface le tag visuel de la liste de tags 
 
-                // Ré-affiche l'ustensil du tag dans la liste du filtre une fois le tag effacé
+                // Ré-affiche l'élément dans la liste de filtre
                 ingredientItem.classList.remove('on_tag')
 
-                // Tableau contenant tous les tags des filtres sélectionnés
+                // Tableau contenant tous les tags visuels
                 let tagsArray = []
                 document.querySelector('#all_tags').childNodes.forEach(tagItem => {
                     tagsArray.push(tagItem.textContent.toLowerCase())
@@ -247,10 +270,7 @@ ingredientList.forEach(ingredientItem => {
 
                         if(tagsArray.includes(recipe.appliance.toLowerCase())){
             
-                            // Récupère toutes les cartes de recettes
                             document.querySelectorAll('#recipe_card').forEach(card => {
-            
-                                // Ajoute le marqueur 'appareil_filter_on'
                                 if (card.dataset.id == recipe.id.toString()){
                                     card.classList.add('appareil_filter_on')
                                 }
@@ -258,7 +278,6 @@ ingredientList.forEach(ingredientItem => {
                         }
 
                     } else {
-                        // Récupère toutes les cartes de recettes
                         document.querySelectorAll('#recipe_card').forEach(card => {
                             card.classList.add('appareil_filter_on')
                         })
@@ -271,10 +290,8 @@ ingredientList.forEach(ingredientItem => {
 
                             if(recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
 
-                                // Récupère toutes les cartes de recettes
                                 document.querySelectorAll('#recipe_card').forEach(card => {
     
-                                    // Ajoute le marqueur 'ustensil_filter_on'
                                     if (card.dataset.id == recipe.id.toString()){
                                         card.classList.add('ustensil_filter_on')
                                     }
@@ -311,38 +328,15 @@ ingredientList.forEach(ingredientItem => {
                 }
             })
         })
-
-        // Si la section de recettes est vide (càd aucun match de recettes), le message d'erreur s'affiche
-        if(document.getElementById('recipe_deck').innerText == ''){
-            document.getElementById('no_result').classList.remove('hidden')
-        }
     })
 })
 
-// Barre de recherche du filtre d'ingredient
-ingredientFilter.onkeyup = (e)=>{
-    let userDataIngredient = e.target.value;
-    var key = e.keyCode
-
-    let ingredientList = document.querySelectorAll('#ingredient_item');
-    ingredientList.forEach(ingredient =>{
-
-        if (key == 8 && ingredient.classList.contains('on_tag')){
-            ingredient.classList.remove('hidden')
-        }
-
-        if(!ingredient.textContent.toLowerCase().includes(userDataIngredient.toLowerCase())){
-            ingredient.classList.add('hidden')
-        } 
-    })
-}
-
 // FILTRES - FILTRE D'APPAREIL
-// Gestion de l'affichage de la liste d'appareil présents dans les recettes de la page
+// Gestion de l'affichage des élements de la liste du filtre d'appareil
 let appareilFilter = document.querySelector('#appareil_filter')
 appareilFilter.addEventListener ('click', e =>{
 
-    // Cache tous les appareils de la liste du filtre
+    // Cache tous les élements de la liste du filtre d'appareil
     document.querySelectorAll('#appareil_item').forEach(appareilItem => appareilItem.classList.add('hidden'))
 
     // Récupération de l'id des recettes présentes
@@ -356,7 +350,7 @@ appareilFilter.addEventListener ('click', e =>{
             
             for (let recipe of recipes){
 
-                // Vérifie quel appareil est lié à la recette via son id dans le fichier recipe.js
+                // Fait correspondre l'id de la carte recette avec sa recette du fichier recipes.js pour retrouver les appareils
                 if(recipe.id == card.dataset.id){
 
                     // Les appareils qui correspondent à la recettes sont ré-affichés
@@ -373,23 +367,25 @@ appareilFilter.addEventListener ('click', e =>{
 
 // Barre de recherche du filtre d'appareil
 appareilFilter.onkeyup = (e)=>{
-    let userDataAppareil = e.target.value;
+    let userDataAppareil = e.target.value; // Saisie de l'utilisateur
     var key = e.keyCode
 
     let appareilFilter = document.querySelectorAll('#appareil_item');
     appareilFilter.forEach(appareil =>{
 
+        // À chaque fois que l'utilisateur appuie sur la touche 'effacer'
         if (key == 8 && ingredient.classList.contains('on_tag')){
             appareil.classList.remove('hidden')
         }
 
+        // Les élements qui ne correspondent pas avec la saisie de l'utilisateur sont cachés
         if(!appareil.textContent.toLowerCase().includes(userDataAppareil.toLowerCase())){
             appareil.classList.add('hidden')
         } 
     })
 }
 
-// Ajout du tag dans la liste de tags au clic sur un appareil de la liste du filtre d'appareil
+// Ajout d'un tag visuel au clic sur un élement de la liste du filtre d'appareil
 let appareilList = document.querySelectorAll('#appareil_item')
 appareilList.forEach(appareilItem => {
     appareilItem.addEventListener('click', e =>{
@@ -397,7 +393,7 @@ appareilList.forEach(appareilItem => {
         // le marqueur 'on_tag' masque l'appareil sélectionné de la liste du filtre
         appareilItem.classList.add('on_tag')
 
-        // au clic sur un appareil de la liste, un élement est généré dans la liste de tag
+        // au clic sur un élément de la liste, un tag visuel est généré et stocké dans la liste des tags
         let tagsList = $('#all_tags')
         tagsList.append(`<div id="appareil_tag">`+appareilItem.textContent+`<a id="close_appareil_tag"><i class="far fa-times-circle"></a></i><div>`)
 
@@ -436,12 +432,12 @@ appareilList.forEach(appareilItem => {
         document.querySelectorAll('#close_appareil_tag').forEach(closeTag => {
             closeTag.addEventListener('click', e =>{
 
-                closeTag.parentNode.remove() // Efface le tag de la liste de tags 
+                closeTag.parentNode.remove() // Efface le tag visuel de la liste de tags 
 
-                // Ré-affiche l'ustensil du tag dans la liste du filtre une fois le tag effacé
+                // Ré-affiche l'élément dans la liste de filtre
                 appareilItem.classList.remove('on_tag')
 
-                // Tableau contenant tous les tags des filtres sélectionnés
+                // Tableau contenant tous les tags visuels
                 let tagsArray = []
                 document.querySelector('#all_tags').childNodes.forEach(tagItem => {
                     tagsArray.push(tagItem.textContent.toLowerCase())
@@ -477,10 +473,8 @@ appareilList.forEach(appareilItem => {
 
                         if(tagsArray.includes(recipe.appliance.toLowerCase())){
             
-                            // Récupère toutes les cartes de recettes
                             document.querySelectorAll('#recipe_card').forEach(card => {
             
-                                // Ajoute le marqueur 'appareil_filter_on'
                                 if (card.dataset.id == recipe.id.toString()){
                                     card.classList.add('appareil_filter_on')
                                 }
@@ -488,7 +482,6 @@ appareilList.forEach(appareilItem => {
                         }
 
                     } else {
-                        // Récupère toutes les cartes de recettes
                         document.querySelectorAll('#recipe_card').forEach(card => {
                             card.classList.add('appareil_filter_on')
                         })
@@ -501,10 +494,7 @@ appareilList.forEach(appareilItem => {
 
                             if(recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
 
-                                // Récupère toutes les cartes de recettes
                                 document.querySelectorAll('#recipe_card').forEach(card => {
-    
-                                    // Ajoute le marqueur 'ustensil_filter_on'
                                     if (card.dataset.id == recipe.id.toString()){
                                         card.classList.add('ustensil_filter_on')
                                     }
@@ -545,11 +535,11 @@ appareilList.forEach(appareilItem => {
 })
 
 // FILTRES - FILTRE D'USTENSIL
-// Gestion de l'affichage de la liste des ustensils présents dans les recettes de la page
+// Gestion de l'affichage des élements de la liste du filtre d'ustensil
 let ustensilFilter = document.querySelector('#ustensils_filter')
 ustensilFilter.addEventListener('click', e =>{
 
-    // Cache tous les ustensils de la liste du filtre
+    // Cache tous les élements de la liste du filtre d'appareil
     document.querySelectorAll('#ustensil_item').forEach(ustensilItem => ustensilItem.classList.add('hidden'))
 
     // Récupération de l'id des recettes présentes
@@ -581,23 +571,25 @@ ustensilFilter.addEventListener('click', e =>{
 
 // Barre de recherche du filtre d'ustensil
 ustensilFilter.onkeyup = (e)=>{
-    let userDataUstensil = e.target.value;
+    let userDataUstensil = e.target.value; // Saisie de l'utilisateur
     var key = e.keyCode
 
     let ustensilFilter = document.querySelectorAll('#ustensil_item');
     ustensilFilter.forEach(ustensil =>{
 
+        // À chaque fois que l'utilisateur appuie sur la touche 'effacer'
         if (key == 8 && ustensil.classList.contains('on_tag')){
             ustensil.classList.remove('hidden')
         }
 
+        // Les élements qui ne correspondent pas avec la saisie de l'utilisateur sont cachés
         if(!ustensil.textContent.toLowerCase().includes(userDataUstensil.toLowerCase())){
             ustensil.classList.add('hidden')
         } 
     })
 }
 
-// Ajout du tag dans la liste de tags au clic sur un ustensil de la liste du filtre d'ustensil
+// Ajout d'un tag visuel au clic sur un élement de la liste du filtre d'ustensil
 let ustensilList = document.querySelectorAll('#ustensil_item')
 ustensilList.forEach(ustensilItem => {
     ustensilItem.addEventListener('click', e =>{
@@ -605,7 +597,7 @@ ustensilList.forEach(ustensilItem => {
         // le marqueur 'on_tag' masque l'ustensil sélectionné de la liste du filtre
         ustensilItem.classList.add('on_tag')
 
-        // au clic sur un ustensil de la liste, un élement est généré dans la liste de tag
+        // au clic sur un élément de la liste, un tag visuel est généré et stocké dans la liste des tags
         let tagsList = $('#all_tags')
         tagsList.append(`<div id="ustensil_tag">`+ustensilItem.textContent+`<a id="close_ustensil_tag"><i class="far fa-times-circle"></a></i><div>`)
 
@@ -644,12 +636,12 @@ ustensilList.forEach(ustensilItem => {
         document.querySelectorAll('#close_ustensil_tag').forEach(closeTag => {
             closeTag.addEventListener('click', e =>{
 
-                closeTag.parentNode.remove() // Efface le tag de la liste de tags 
+                closeTag.parentNode.remove() // Efface le tag visuel de la liste de tags 
 
-                // Ré-affiche l'ustensil du tag dans la liste du filtre une fois le tag effacé
+                // Ré-affiche l'élément dans la liste de filtre
                 ustensilItem.classList.remove('on_tag')
 
-                // Tableau contenant tous les tags des filtres sélectionnés
+                // Tableau contenant tous les tags visuels
                 let tagsArray = []
                 document.querySelector('#all_tags').childNodes.forEach(tagItem => {
                     tagsArray.push(tagItem.textContent.toLowerCase())
@@ -685,10 +677,8 @@ ustensilList.forEach(ustensilItem => {
 
                         if(tagsArray.includes(recipe.appliance.toLowerCase())){
             
-                            // Récupère toutes les cartes de recettes
                             document.querySelectorAll('#recipe_card').forEach(card => {
             
-                                // Ajoute le marqueur 'appareil_filter_on'
                                 if (card.dataset.id == recipe.id.toString()){
                                     card.classList.add('appareil_filter_on')
                                 }
@@ -696,7 +686,6 @@ ustensilList.forEach(ustensilItem => {
                         }
 
                     } else {
-                        // Récupère toutes les cartes de recettes
                         document.querySelectorAll('#recipe_card').forEach(card => {
                             card.classList.add('appareil_filter_on')
                         })
@@ -709,10 +698,8 @@ ustensilList.forEach(ustensilItem => {
 
                             if(recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
 
-                                // Récupère toutes les cartes de recettes
                                 document.querySelectorAll('#recipe_card').forEach(card => {
     
-                                    // Ajoute le marqueur 'ustensil_filter_on'
                                     if (card.dataset.id == recipe.id.toString()){
                                         card.classList.add('ustensil_filter_on')
                                     }
