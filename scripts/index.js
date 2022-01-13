@@ -203,51 +203,107 @@ ingredientList.forEach(ingredientItem => {
         })
 
         // Bouton de fermeture des tags
-        document.querySelectorAll('#close_ingredient_tag').forEach(closeTag =>{
+        document.querySelectorAll('#close_ingredient_tag').forEach(closeTag => {
             closeTag.addEventListener('click', e =>{
 
-                closeTag.parentNode.remove() // Efface le tag de la liste de tags
+                closeTag.parentNode.remove() // Efface le tag de la liste de tags 
 
-                // Ré-affiche l'ingrédient du tag dans la liste du filtre une fois le tag effacé
+                // Ré-affiche l'ustensil du tag dans la liste du filtre une fois le tag effacé
                 ingredientItem.classList.remove('on_tag')
 
-                // Récupère tous les élements actifs de la liste de tags
+                // Tableau contenant tous les tags des filtres sélectionnés
+                let tagsArray = []
                 document.querySelector('#all_tags').childNodes.forEach(tagItem => {
+                    tagsArray.push(tagItem.textContent.toLowerCase())
+                })
 
-                    // Tri des tags ingrédients
-                    // Compare les éléments actifs de la liste de tags avec tous les ingrédients des recettes et on affiche les recettes qui possèdent au moins un des élément tag
-                    document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient => {
+                // Affiche toutes les recettes
+                let recipeCards = document.querySelectorAll('#recipe_card')
+                for(let i =0; i<recipeCards.length;i++){
+                    recipeCards[i].classList.remove('hidden')
+                }
 
-                        // Si un élément de la liste des tags correspond à l'un des ingredients présents dans les recettes
-                        if(ingredient.textContent.toLowerCase() == tagItem.childNodes[0].textContent.toLowerCase()){
+                // Tri des recettes par rapport aux tags 
+                for (let recipe of recipes){
 
-                            // Montre la/les recette(s)
-                            ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.remove('hidden')
-                        }
-                    })
+                    // Filtrage par rapport aux tags ingrédients
+                    if(document.querySelector('#all_tags').contains(document.querySelector('#ingredient_tag'))){
 
-                    // Tri des tags appareils et ustensils
-                    for (let recipe of recipes){
+                        document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
 
-                        // Si un élément de la liste des tags correspond à l'un des appareils ou ustensils du fichier recipe.js
-                        if(tagItem.textContent.toLowerCase().includes(recipe.appliance.toLowerCase()) || recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
+                            if (tagsArray.includes(ingredient.textContent.toLowerCase())){
+                                ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('ingredient_filter_on')
+                            } 
+                        })
 
+                    } else {
+                        document.querySelectorAll('#recipe_card').forEach(card => {
+                            card.classList.add('ingredient_filter_on')
+                        })
+                    }
+
+                    // Filtrage par rapport aux tags appareils
+                    if(document.querySelector('#all_tags').contains(document.querySelector('#appareil_tag'))){
+
+                        if(tagsArray.includes(recipe.appliance.toLowerCase())){
+            
                             // Récupère toutes les cartes de recettes
                             document.querySelectorAll('#recipe_card').forEach(card => {
-    
-                                // Compare l'id des recettes avec celles des recettes du fichier recipe.js afin de retrouver l'appareil présent dans la liste des tags
+            
+                                // Ajoute le marqueur 'appareil_filter_on'
                                 if (card.dataset.id == recipe.id.toString()){
-
-                                    // Montre la/les recette(s)
-                                    card.classList.remove('hidden')
+                                    card.classList.add('appareil_filter_on')
                                 }
                             })
                         }
+
+                    } else {
+                        // Récupère toutes les cartes de recettes
+                        document.querySelectorAll('#recipe_card').forEach(card => {
+                            card.classList.add('appareil_filter_on')
+                        })
+                    }
+
+                    // Filtrage par rapport aux tags ustensils
+                    if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
+
+                        document.querySelector('#all_tags').childNodes.forEach(tagItem => {
+
+                            if(recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
+
+                                // Récupère toutes les cartes de recettes
+                                document.querySelectorAll('#recipe_card').forEach(card => {
+    
+                                    // Ajoute le marqueur 'ustensil_filter_on'
+                                    if (card.dataset.id == recipe.id.toString()){
+                                        card.classList.add('ustensil_filter_on')
+                                    }
+                                })
+                            }
+                        })
+
+                    } else {
+                        document.querySelectorAll('#recipe_card').forEach(card => {
+                            card.classList.add('ustensil_filter_on')
+                        })
+                    }
+                }
+
+                // Trie les recettes selon la présence des marqueurs
+                document.querySelectorAll('#recipe_card').forEach(card => {
+                    if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensil_filter_on'))){
+                        card.classList.add('hidden')
+                        card.classList.remove('ingredient_filter_on')
+                        card.classList.remove('appareil_filter_on')
+                        card.classList.remove('ustensil_filter_on')
+                    } else {
+                        card.classList.remove('ingredient_filter_on')
+                        card.classList.remove('appareil_filter_on')
+                        card.classList.remove('ustensil_filter_on')
                     }
                 })
 
                 // Si la saisie fait moins de 2 caractères et qu'aucun filtre n'est utilisé, toutes les recettes sont affichées
-                let recipeCards = document.querySelectorAll('#recipe_card')
                 if (document.querySelector('#search_input').value.toLowerCase()<=3 && !document.querySelector('#all_tags').hasChildNodes()){
                     for(let i =0; i<recipeCards.length;i++){
                         recipeCards[i].classList.remove('hidden')
@@ -380,47 +436,104 @@ appareilList.forEach(appareilItem => {
         document.querySelectorAll('#close_appareil_tag').forEach(closeTag => {
             closeTag.addEventListener('click', e =>{
 
-                closeTag.parentNode.remove() // Efface le tag de la liste de tags
+                closeTag.parentNode.remove() // Efface le tag de la liste de tags 
 
-                // Ré-affiche l'ingrédient du tag dans la liste du filtre une fois le tag effacé
+                // Ré-affiche l'ustensil du tag dans la liste du filtre une fois le tag effacé
                 appareilItem.classList.remove('on_tag')
 
-                // Récupère tous les élements actifs de la liste de tags
+                // Tableau contenant tous les tags des filtres sélectionnés
+                let tagsArray = []
                 document.querySelector('#all_tags').childNodes.forEach(tagItem => {
+                    tagsArray.push(tagItem.textContent.toLowerCase())
+                })
 
-                    // Tri des tags ingrédients
-                    // Compare les éléments actifs de la liste de tags avec tous les ingrédients des recettes et on affiche les recettes qui possèdent au moins un des élément tag
-                    document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient => {
-                        // Si un élément de la liste des tags correspond à l'un des ingredients présents dans les recettes
-                        if(ingredient.textContent.toLowerCase() == tagItem.childNodes[0].textContent.toLowerCase()){
+                // Affiche toutes les recettes
+                let recipeCards = document.querySelectorAll('#recipe_card')
+                for(let i =0; i<recipeCards.length;i++){
+                    recipeCards[i].classList.remove('hidden')
+                }
 
-                            // Montre la/les recette(s)
-                            ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.remove('hidden')
-                        }
-                    })
+                // Tri des recettes par rapport aux tags 
+                for (let recipe of recipes){
 
-                    // Tri des tags appareils et ustensils
-                    for (let recipe of recipes){
+                    // Filtrage par rapport aux tags ingrédients
+                    if(document.querySelector('#all_tags').contains(document.querySelector('#ingredient_tag'))){
 
-                        // Si un élément de la liste des tags correspond à l'un des appareils ou ustensils du fichier recipe.js
-                        if(tagItem.textContent.toLowerCase().includes(recipe.appliance.toLowerCase()) || recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
+                        document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
 
+                            if (tagsArray.includes(ingredient.textContent.toLowerCase())){
+                                ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('ingredient_filter_on')
+                            } 
+                        })
+
+                    } else {
+                        document.querySelectorAll('#recipe_card').forEach(card => {
+                            card.classList.add('ingredient_filter_on')
+                        })
+                    }
+
+                    // Filtrage par rapport aux tags appareils
+                    if(document.querySelector('#all_tags').contains(document.querySelector('#appareil_tag'))){
+
+                        if(tagsArray.includes(recipe.appliance.toLowerCase())){
+            
                             // Récupère toutes les cartes de recettes
                             document.querySelectorAll('#recipe_card').forEach(card => {
-    
-                                // Compare l'id des recettes avec celles des recettes du fichier recipe.js afin de retrouver l'appareil présent dans la liste des tags
+            
+                                // Ajoute le marqueur 'appareil_filter_on'
                                 if (card.dataset.id == recipe.id.toString()){
-
-                                    // Montre la/les recette(s)
-                                    card.classList.remove('hidden')
+                                    card.classList.add('appareil_filter_on')
                                 }
                             })
                         }
+
+                    } else {
+                        // Récupère toutes les cartes de recettes
+                        document.querySelectorAll('#recipe_card').forEach(card => {
+                            card.classList.add('appareil_filter_on')
+                        })
+                    }
+
+                    // Filtrage par rapport aux tags ustensils
+                    if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
+
+                        document.querySelector('#all_tags').childNodes.forEach(tagItem => {
+
+                            if(recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
+
+                                // Récupère toutes les cartes de recettes
+                                document.querySelectorAll('#recipe_card').forEach(card => {
+    
+                                    // Ajoute le marqueur 'ustensil_filter_on'
+                                    if (card.dataset.id == recipe.id.toString()){
+                                        card.classList.add('ustensil_filter_on')
+                                    }
+                                })
+                            }
+                        })
+
+                    } else {
+                        document.querySelectorAll('#recipe_card').forEach(card => {
+                            card.classList.add('ustensil_filter_on')
+                        })
+                    }
+                }
+
+                // Trie les recettes selon la présence des marqueurs
+                document.querySelectorAll('#recipe_card').forEach(card => {
+                    if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensil_filter_on'))){
+                        card.classList.add('hidden')
+                        card.classList.remove('ingredient_filter_on')
+                        card.classList.remove('appareil_filter_on')
+                        card.classList.remove('ustensil_filter_on')
+                    } else {
+                        card.classList.remove('ingredient_filter_on')
+                        card.classList.remove('appareil_filter_on')
+                        card.classList.remove('ustensil_filter_on')
                     }
                 })
 
                 // Si la saisie fait moins de 2 caractères et qu'aucun filtre n'est utilisé, toutes les recettes sont affichées
-                let recipeCards = document.querySelectorAll('#recipe_card')
                 if (document.querySelector('#search_input').value.toLowerCase()<=3 && !document.querySelector('#all_tags').hasChildNodes()){
                     for(let i =0; i<recipeCards.length;i++){
                         recipeCards[i].classList.remove('hidden')
@@ -536,42 +649,99 @@ ustensilList.forEach(ustensilItem => {
                 // Ré-affiche l'ustensil du tag dans la liste du filtre une fois le tag effacé
                 ustensilItem.classList.remove('on_tag')
 
-                // Récupère tous les élements actifs de la liste de tags
+                // Tableau contenant tous les tags des filtres sélectionnés
+                let tagsArray = []
                 document.querySelector('#all_tags').childNodes.forEach(tagItem => {
+                    tagsArray.push(tagItem.textContent.toLowerCase())
+                })
 
-                    // Tri des tags ingrédients
-                    // Compare les éléments actifs de la liste de tags avec tous les ingrédients des recettes et on affiche les recettes qui possèdent au moins un des élément tag
-                    document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient => {
-                        // Si un élément de la liste des tags correspond à l'un des ingredients présents dans les recettes
-                        if(ingredient.textContent.toLowerCase() == tagItem.childNodes[0].textContent.toLowerCase()){
+                // Affiche toutes les recettes
+                let recipeCards = document.querySelectorAll('#recipe_card')
+                for(let i =0; i<recipeCards.length;i++){
+                    recipeCards[i].classList.remove('hidden')
+                }
 
-                            // Montre la/les recette(s)
-                            ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.remove('hidden')
-                        }
-                    })
+                // Tri des recettes par rapport aux tags 
+                for (let recipe of recipes){
 
-                    // Tri des tags appareils et ustensils
-                    for (let recipe of recipes){
+                    // Filtrage par rapport aux tags ingrédients
+                    if(document.querySelector('#all_tags').contains(document.querySelector('#ingredient_tag'))){
 
-                        // Si un élément de la liste des tags correspond à l'un des appareils ou ustensils du fichier recipe.js
-                        if(tagItem.textContent.toLowerCase().includes(recipe.appliance.toLowerCase()) || recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
+                        document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
 
+                            if (tagsArray.includes(ingredient.textContent.toLowerCase())){
+                                ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('ingredient_filter_on')
+                            } 
+                        })
+
+                    } else {
+                        document.querySelectorAll('#recipe_card').forEach(card => {
+                            card.classList.add('ingredient_filter_on')
+                        })
+                    }
+
+                    // Filtrage par rapport aux tags appareils
+                    if(document.querySelector('#all_tags').contains(document.querySelector('#appareil_tag'))){
+
+                        if(tagsArray.includes(recipe.appliance.toLowerCase())){
+            
                             // Récupère toutes les cartes de recettes
                             document.querySelectorAll('#recipe_card').forEach(card => {
-    
-                                // Compare l'id des recettes avec celles des recettes du fichier recipe.js afin de retrouver l'appareil présent dans la liste des tags
+            
+                                // Ajoute le marqueur 'appareil_filter_on'
                                 if (card.dataset.id == recipe.id.toString()){
-
-                                    // Montre la/les recette(s)
-                                    card.classList.remove('hidden')
+                                    card.classList.add('appareil_filter_on')
                                 }
                             })
                         }
+
+                    } else {
+                        // Récupère toutes les cartes de recettes
+                        document.querySelectorAll('#recipe_card').forEach(card => {
+                            card.classList.add('appareil_filter_on')
+                        })
+                    }
+
+                    // Filtrage par rapport aux tags ustensils
+                    if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
+
+                        document.querySelector('#all_tags').childNodes.forEach(tagItem => {
+
+                            if(recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
+
+                                // Récupère toutes les cartes de recettes
+                                document.querySelectorAll('#recipe_card').forEach(card => {
+    
+                                    // Ajoute le marqueur 'ustensil_filter_on'
+                                    if (card.dataset.id == recipe.id.toString()){
+                                        card.classList.add('ustensil_filter_on')
+                                    }
+                                })
+                            }
+                        })
+
+                    } else {
+                        document.querySelectorAll('#recipe_card').forEach(card => {
+                            card.classList.add('ustensil_filter_on')
+                        })
+                    }
+                }
+
+                // Trie les recettes selon la présence des marqueurs
+                document.querySelectorAll('#recipe_card').forEach(card => {
+                    if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensil_filter_on'))){
+                        card.classList.add('hidden')
+                        card.classList.remove('ingredient_filter_on')
+                        card.classList.remove('appareil_filter_on')
+                        card.classList.remove('ustensil_filter_on')
+                    } else {
+                        card.classList.remove('ingredient_filter_on')
+                        card.classList.remove('appareil_filter_on')
+                        card.classList.remove('ustensil_filter_on')
                     }
                 })
 
                 // Si la saisie fait moins de 2 caractères et qu'aucun filtre n'est utilisé, toutes les recettes sont affichées
-                let recipeCards = document.querySelectorAll('#recipe_card')
                 if (document.querySelector('#search_input').value.toLowerCase()<=3 && !document.querySelector('#all_tags').hasChildNodes()){
                     for(let i =0; i<recipeCards.length;i++){
                         recipeCards[i].classList.remove('hidden')
