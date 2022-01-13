@@ -33,7 +33,6 @@ function capitalizeFirstLetter(string) {
 }
 
 // Ajout de toutes les suggestions d'appareils/d'ustensils/d'ingredients dans leur filtre respectif
-
 // Tableaux vides de stockage temporaire
 let appareilArray = []
 let ustensilArray = []
@@ -98,8 +97,11 @@ mainSearchBar.onkeyup = (e)=>{
     let userData = e.target.value; // Entrée de l'utilisateur
     let recipeCards = document.querySelectorAll('#recipe_card')
 
+    // Affiche toutes les recettes pour le tri
+    document.querySelectorAll('#recipe_card').forEach(card => card.classList.remove('hidden'))
+
     // Recherche déclenchée à partir de 3 caractères
-    if (userData.length>=3){
+    if(userData.length>=3){
 
         let allCardsRecipesArray = []
         currentRecipes(allCardsRecipesArray)
@@ -128,11 +130,95 @@ mainSearchBar.onkeyup = (e)=>{
         // Si la section de recettes est vide (càd aucun match de recettes), le message d'erreur s'affiche
         if(document.getElementById('recipe_deck').innerText == ''){
             document.getElementById('no_result').classList.remove('hidden')
-        }
+        } 
     }
 
+    // Tri déclenché si la liste de tags possède des éléments et que la saisie fait moins de 3 caractères
+    if(userData.length <=3 && document.querySelector('#all_tags').hasChildNodes()){
+
+        // Tableau contenant tous les tags visuels
+        let tagsArray = []
+        document.querySelector('#all_tags').childNodes.forEach(tagItem => {
+            tagsArray.push(tagItem.textContent.toLowerCase())
+        })
+
+        // Tri des recettes par rapport aux tags 
+        for (let recipe of recipes){ 
+
+            // Filtrage par rapport aux tags ingrédients
+            if(document.querySelector('#all_tags').contains(document.querySelector('#ingredient_tag'))){
+
+                document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
+
+                    if (tagsArray.includes(ingredient.textContent.toLowerCase())){
+                        ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('ingredient_filter_on')
+                    } 
+                })
+
+            } else {
+                document.querySelectorAll('#recipe_card').forEach(card => {
+                    card.classList.add('ingredient_filter_on')
+                })
+            }
+
+            // Filtrage par rapport aux tags appareils
+            if(document.querySelector('#all_tags').contains(document.querySelector('#appareil_tag'))){
+
+                if(tagsArray.includes(recipe.appliance.toLowerCase())){
+    
+                    document.querySelectorAll('#recipe_card').forEach(card => {
+                        if (card.dataset.id == recipe.id.toString()){
+                            card.classList.add('appareil_filter_on')
+                        }
+                    })
+                }
+
+            } else {
+                document.querySelectorAll('#recipe_card').forEach(card => {
+                    card.classList.add('appareil_filter_on')
+                })
+            }
+
+            // Filtrage par rapport aux tags ustensils
+            if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
+
+                document.querySelector('#all_tags').childNodes.forEach(tagItem => {
+
+                    if(recipe.ustensils.join(' ').toLowerCase().includes(tagItem.textContent.toLowerCase())){
+
+                        document.querySelectorAll('#recipe_card').forEach(card => {
+
+                            if (card.dataset.id == recipe.id.toString()){
+                                card.classList.add('ustensil_filter_on')
+                            }
+                        })
+                    }
+                })
+
+            } else {
+                document.querySelectorAll('#recipe_card').forEach(card => {
+                    card.classList.add('ustensil_filter_on')
+                })
+            }
+        }
+
+        // Trie les recettes selon la présence des marqueurs
+        document.querySelectorAll('#recipe_card').forEach(card => {
+            if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensil_filter_on'))){
+                card.classList.add('hidden')
+                card.classList.remove('ingredient_filter_on')
+                card.classList.remove('appareil_filter_on')
+                card.classList.remove('ustensil_filter_on')
+            } else {
+                card.classList.remove('ingredient_filter_on')
+                card.classList.remove('appareil_filter_on')
+                card.classList.remove('ustensil_filter_on')
+            }
+        })
+    } 
+
     // Si la saisie fait moins de 3 caractères et qu'aucun filtre n'est utilisé, toutes les recettes sont affichées
-    if (userData.length <=3 && !document.querySelector('#all_tags').hasChildNodes()){
+    if(userData.length <=3 && !document.querySelector('#all_tags').hasChildNodes()){
         
         for(let i =0; i<recipeCards.length;i++){
             recipeCards[i].classList.remove('hidden')
