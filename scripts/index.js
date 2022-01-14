@@ -1,6 +1,6 @@
 import { recipes } from "./recipes.js";
 
-// Ajout des recettes
+// Ajout des recettes dans la page grâce au fichier recipe.js
 let recipesSection = $('#recipe_deck')
 recipes.forEach(recipe => {
 
@@ -27,23 +27,19 @@ recipes.forEach(recipe => {
     })
 })
 
-// Majuscule sur le premier mot  
+/////////////// AFFICHAGE DES ÉLÉMENTS DANS LEUR FILTRE RESPECTIF SANS DOUBLONS ///////////////
+
+// Fonction d'ajout d'une majuscule sur le premier mot  
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-// Ajout de toutes les suggestions d'appareils/d'ustensils/d'ingredients dans leur filtre respectif
 // Tableaux vides de stockage temporaire
 let appareilArray = []
 let ustensilArray = []
 let ingredientArray = []
 
-// Récupère tous les ingrédients des recettes sur la page et les insère dans le tableau 'ingredientArray'
-document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient => {
-    ingredientArray.push(capitalizeFirstLetter(ingredient.textContent.toLowerCase()))
-})
-
-// Passe sur chaque recette
+// Ajout de toutes les suggestions d'appareils/d'ustensils/d'ingredients dans leur filtre respectif
 recipes.forEach(recipe =>{
     // Insère chaque appareil dans le tableau 'appareilArray'
     appareilArray.push(capitalizeFirstLetter(recipe.appliance.toString().toLowerCase()))
@@ -53,6 +49,11 @@ recipes.forEach(recipe =>{
     allUstensils.forEach(ustensil =>{
         ustensilArray.push(capitalizeFirstLetter(ustensil.toLowerCase()))
     })
+})
+
+// Récupère tous les ingrédients des recettes sur la page et les insère dans le tableau 'ingredientArray'
+document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient => {
+    ingredientArray.push(capitalizeFirstLetter(ingredient.textContent.toLowerCase()))
 })
 
 // On enlève les doublons des tableaux et on les insère dans des nouveaux tableaux
@@ -76,6 +77,8 @@ for (let i = 0; i< ustensilArrayUnique.length; i++){
     ustensilsList.append(`<a class="dropdown-item" id="ustensil_item">`+ustensilArrayUnique[i]+`</a>`)
 }
 
+/////////////// FONCTIONS DE TRI ///////////////
+
 // Fonction de récupération de l'id des cartes présentes dans la page
 function currentRecipes (allCardsRecipesArray){
     let allCardRecipes = document.querySelectorAll('#recipe_card')
@@ -88,7 +91,125 @@ function currentRecipes (allCardsRecipesArray){
     return allCardsRecipesArray
 }
 
-// BARRE DE RECHERCHE 
+// Fonction de tri via la barre de recherche
+function searchbarFilter (allCardsRecipesArray, recipeCards){
+    // Tri des recettes par rapport à la barre de recherche
+    for(let card of recipeCards){
+                        
+        // Vise uniquement les recettes qui ne sont pas cachées grâce à leur id
+        if(allCardsRecipesArray.includes(card.dataset.id)){       
+            // Cache la recette si elle valide l'inverse des conditions suivantes: 
+            if(!(
+                // Si la saisie contient le titre de la recette
+                card.querySelector('#recipe_title').textContent.toLowerCase().includes(document.querySelector('#search_input').value) ||
+                // Si la saisie contient un mot de la description
+                card.querySelector('#recipe_description').textContent.toLowerCase().includes(document.querySelector('#search_input').value) ||
+                // Si la saisie contient un des ingredients de la recette
+                document.querySelectorAll('#recipe_card_ingredient').forEach(cardIngredient => {
+                    cardIngredient.innerText.toLowerCase().includes(document.querySelector('#search_input').value)
+                }))
+            ){
+                card.classList.add('hidden')
+            } 
+        }
+    } 
+}
+
+// Fonction de tri via les tags
+function filtersFilter (tagsArray){
+
+    // Tri des recettes par rapport aux tags 
+    for (let recipe of recipes){ 
+
+        // Filtrage par rapport aux tags ingrédients
+        if(document.querySelector('#all_tags').contains(document.querySelector('#ingredient_tag'))){
+
+            document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
+
+                // Ajout d'un marqueur de validation
+                if (tagsArray.includes(ingredient.textContent.toLowerCase())){
+                    ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('ingredient_filter_on')
+                } 
+            })
+
+        // S'il n'y a pas de tag d'ingrédient sélectionné, on ajoute automatiquement le marqueur de validation
+        } else {
+            document.querySelectorAll('#recipe_card').forEach(card => {
+                card.classList.add('ingredient_filter_on')
+            })
+        }
+
+        // Filtrage par rapport aux tags appareils
+        if(document.querySelector('#all_tags').contains(document.querySelector('#appareil_tag'))){
+
+            if(tagsArray.includes(recipe.appliance.toLowerCase())){
+
+                document.querySelectorAll('#recipe_card').forEach(card => {
+                    if (card.dataset.id == recipe.id.toString()){
+                        card.classList.add('appareil_filter_on')
+                    }
+                })
+            }
+
+        // S'il n'y a pas de tag d'appareil sélectionné, on ajoute automatiquement le marqueur de validation
+        } else {
+            document.querySelectorAll('#recipe_card').forEach(card => {
+                card.classList.add('appareil_filter_on')
+            })
+        }
+
+        // Filtrage par rapport aux tags ustensils
+        // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
+
+        // On ajoute tous les tag ustensils dans un tableau
+        let ustensilTagArray = []
+        document.querySelectorAll('#ustensil_tag').forEach(ustensilTag => {
+            ustensilTagArray.push(ustensilTag.textContent.toLowerCase())
+        })
+
+        // Fonction qui vérifie que tous les éléments d'un tableau sont également contenus dans un autre tableau
+        let compareArrays = (arr, target) => target.every(v => arr.includes(v));
+
+        if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
+
+            if(compareArrays(recipe.ustensils.map(ustensil => ustensil.toLowerCase()),ustensilTagArray)){
+
+                document.querySelectorAll('#recipe_card').forEach(card => {
+
+                    if (card.dataset.id == recipe.id.toString()){
+                        card.classList.add('ustensil_filter_on')
+                    }
+                })
+            } 
+
+        // S'il n'y a pas de tag d'ustensil sélectionné, on ajoute automatiquement le marqueur de validation
+        } else {
+            document.querySelectorAll('#recipe_card').forEach(card => {
+                card.classList.add('ustensil_filter_on')
+            })
+        }
+    }
+
+    // Trie les recettes selon la présence des marqueurs
+    document.querySelectorAll('#recipe_card').forEach(card => {
+
+        // Si la carte recette possède les 3 marqueurs de validation, on l'affiche 
+        if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensil_filter_on'))){
+            
+            card.classList.add('hidden')
+            card.classList.remove('ingredient_filter_on')
+            card.classList.remove('appareil_filter_on')
+            card.classList.remove('ustensil_filter_on')
+        } else {
+            card.classList.remove('ingredient_filter_on')
+            card.classList.remove('appareil_filter_on')
+            card.classList.remove('ustensil_filter_on')
+        }
+    })
+}
+
+/////////////// BARRE DE RECHERCHE ///////////////
+
 let mainSearchBar = document.querySelector('#search_input')
 mainSearchBar.onkeyup = (e)=>{
 
@@ -103,31 +224,11 @@ mainSearchBar.onkeyup = (e)=>{
     // Recherche déclenchée à partir de 3 caractères
     if(userData.length>=3){
 
-        console.log('hello 1')
-
         let allCardsRecipesArray = []
         currentRecipes(allCardsRecipesArray)
 
-        // Tri des recettes par rapport à la barre de recherche
-        for(let card of recipeCards){
-                            
-            // Vise uniquement les recettes qui ne sont pas cachées grâce à leur id
-            if(allCardsRecipesArray.includes(card.dataset.id)){       
-                // Cache la recette si elle valide l'inverse des conditions suivantes: 
-                if(!(
-                    // Si la saisie contient le titre de la recette
-                    card.querySelector('#recipe_title').textContent.toLowerCase().includes(userData) ||
-                    // Si la saisie contient un mot de la description
-                    card.querySelector('#recipe_description').textContent.toLowerCase().includes(userData) ||
-                    // Si la saisie contient un des ingredients de la recette
-                    document.querySelectorAll('#recipe_card_ingredient').forEach(cardIngredient => {
-                        cardIngredient.innerText.toLowerCase().includes(userData)
-                    }))
-                ){
-                    card.classList.add('hidden')
-                } 
-            }
-        }
+        // Tri via la barre de recherche
+        searchbarFilter (allCardsRecipesArray, recipeCards)
 
         // Tableau contenant tous les tags visuels
         let tagsArray = []
@@ -135,87 +236,8 @@ mainSearchBar.onkeyup = (e)=>{
             tagsArray.push(tagItem.textContent.toLowerCase())
         })
 
-        // Tri des recettes par rapport aux tags 
-        for (let recipe of recipes){ 
-
-            // Filtrage par rapport aux tags ingrédients
-            if(document.querySelector('#all_tags').contains(document.querySelector('#ingredient_tag'))){
-
-                document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
-
-                    if (tagsArray.includes(ingredient.textContent.toLowerCase())){
-                        ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('ingredient_filter_on')
-                    } 
-                })
-
-            } else {
-                document.querySelectorAll('#recipe_card').forEach(card => {
-                    card.classList.add('ingredient_filter_on')
-                })
-            }
-
-            // Filtrage par rapport aux tags appareils
-            if(document.querySelector('#all_tags').contains(document.querySelector('#appareil_tag'))){
-
-                if(tagsArray.includes(recipe.appliance.toLowerCase())){
-    
-                    document.querySelectorAll('#recipe_card').forEach(card => {
-                        if (card.dataset.id == recipe.id.toString()){
-                            card.classList.add('appareil_filter_on')
-                        }
-                    })
-                }
-
-            } else {
-                document.querySelectorAll('#recipe_card').forEach(card => {
-                    card.classList.add('appareil_filter_on')
-                })
-            }
-
-            // Filtrage par rapport aux tags ustensils
-            // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
-
-            // On ajoute tous les tag ustensils dans un tableau
-            let ustensilTagArray = []
-            document.querySelectorAll('#ustensil_tag').forEach(ustensilTag => {
-                ustensilTagArray.push(ustensilTag.textContent.toLowerCase())
-            })
-
-            // Fonction qui vérifie que tous les éléments d'un tableau sont également contenus dans un autre tableau
-            let compareArrays = (arr, target) => target.every(v => arr.includes(v));
-
-            if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
-
-                if(compareArrays(recipe.ustensils.map(ustensil => ustensil.toLowerCase()),ustensilTagArray)){
-
-                    document.querySelectorAll('#recipe_card').forEach(card => {
-
-                        if (card.dataset.id == recipe.id.toString()){
-                            card.classList.add('ustensil_filter_on')
-                        }
-                    })
-                } 
-
-            } else {
-                document.querySelectorAll('#recipe_card').forEach(card => {
-                    card.classList.add('ustensil_filter_on')
-                })
-            }
-        }
-
-        // Trie les recettes selon la présence des marqueurs
-        document.querySelectorAll('#recipe_card').forEach(card => {
-            if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensil_filter_on'))){
-                card.classList.add('hidden')
-                card.classList.remove('ingredient_filter_on')
-                card.classList.remove('appareil_filter_on')
-                card.classList.remove('ustensil_filter_on')
-            } else {
-                card.classList.remove('ingredient_filter_on')
-                card.classList.remove('appareil_filter_on')
-                card.classList.remove('ustensil_filter_on')
-            }
-        })
+        // Tri via les tags
+        filtersFilter (tagsArray)
         
         // Si la section de recettes est vide (càd aucun match de recettes), le message d'erreur s'affiche
         if(document.getElementById('recipe_deck').innerText == ''){
@@ -232,93 +254,13 @@ mainSearchBar.onkeyup = (e)=>{
             tagsArray.push(tagItem.textContent.toLowerCase())
         })
 
-        // Tri des recettes par rapport aux tags 
-        for (let recipe of recipes){ 
+        // Tri via les tags
+        filtersFilter (tagsArray)
 
-            // Filtrage par rapport aux tags ingrédients
-            if(document.querySelector('#all_tags').contains(document.querySelector('#ingredient_tag'))){
-
-                document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
-
-                    if (tagsArray.includes(ingredient.textContent.toLowerCase())){
-                        ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('ingredient_filter_on')
-                    } 
-                })
-
-            } else {
-                document.querySelectorAll('#recipe_card').forEach(card => {
-                    card.classList.add('ingredient_filter_on')
-                })
-            }
-
-            // Filtrage par rapport aux tags appareils
-            if(document.querySelector('#all_tags').contains(document.querySelector('#appareil_tag'))){
-
-                if(tagsArray.includes(recipe.appliance.toLowerCase())){
-    
-                    document.querySelectorAll('#recipe_card').forEach(card => {
-                        if (card.dataset.id == recipe.id.toString()){
-                            card.classList.add('appareil_filter_on')
-                        }
-                    })
-                }
-
-            } else {
-                document.querySelectorAll('#recipe_card').forEach(card => {
-                    card.classList.add('appareil_filter_on')
-                })
-            }
-
-            // Filtrage par rapport aux tags ustensils
-            // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
-
-            // On ajoute tous les tag ustensils dans un tableau
-            let ustensilTagArray = []
-            document.querySelectorAll('#ustensil_tag').forEach(ustensilTag => {
-                ustensilTagArray.push(ustensilTag.textContent.toLowerCase())
-            })
-
-            // Fonction qui vérifie que tous les éléments d'un tableau sont également contenus dans un autre tableau
-            let compareArrays = (arr, target) => target.every(v => arr.includes(v));
-
-            if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
-
-                if(compareArrays(recipe.ustensils.map(ustensil => ustensil.toLowerCase()),ustensilTagArray)){
-
-                    document.querySelectorAll('#recipe_card').forEach(card => {
-
-                        if (card.dataset.id == recipe.id.toString()){
-                            card.classList.add('ustensil_filter_on')
-                        }
-                    })
-                } 
-
-            } else {
-                document.querySelectorAll('#recipe_card').forEach(card => {
-                    card.classList.add('ustensil_filter_on')
-                })
-            }
-        }
-
-        // Trie les recettes selon la présence des marqueurs
-        document.querySelectorAll('#recipe_card').forEach(card => {
-            if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensil_filter_on'))){
-                card.classList.add('hidden')
-                card.classList.remove('ingredient_filter_on')
-                card.classList.remove('appareil_filter_on')
-                card.classList.remove('ustensil_filter_on')
-            } else {
-                card.classList.remove('ingredient_filter_on')
-                card.classList.remove('appareil_filter_on')
-                card.classList.remove('ustensil_filter_on')
-            }
-        })
-    } 
+    }
 
     // Si la saisie fait moins de 3 caractères et qu'aucun filtre n'est utilisé, toutes les recettes sont affichées
     if(userData.length <=3 && !document.querySelector('#all_tags').hasChildNodes()){
-
-        console.log('hello 2')
         
         for(let i =0; i<recipeCards.length;i++){
             recipeCards[i].classList.remove('hidden')
@@ -326,7 +268,9 @@ mainSearchBar.onkeyup = (e)=>{
     }
 }
 
-// FILTRES - FILTRE D'INGRÉDIENT
+/////////////// FILTRES ///////////////
+
+// FILTRE INGRÉDIENT
 // Gestion de l'affichage des élements de la liste du filtre d'ingrédient
 let ingredientFilter = document.querySelector('#ingredients_filter')
 ingredientFilter.addEventListener ('click', e =>{
@@ -435,115 +379,17 @@ ingredientList.forEach(ingredientItem => {
                 let allCardsRecipesArray = []
                 currentRecipes(allCardsRecipesArray)
         
-                // Tri des recettes par rapport à la barre de recherche
-                for(let card of recipeCards){
-                                    
-                    // Vise uniquement les recettes qui ne sont pas cachées grâce à leur id
-                    if(allCardsRecipesArray.includes(card.dataset.id)){       
-                        // Cache la recette si elle valide l'inverse des conditions suivantes: 
-                        if(!(
-                            // Si la saisie contient le titre de la recette
-                            card.querySelector('#recipe_title').textContent.toLowerCase().includes(document.querySelector('#search_input').value) ||
-                            // Si la saisie contient un mot de la description
-                            card.querySelector('#recipe_description').textContent.toLowerCase().includes(document.querySelector('#search_input').value) ||
-                            // Si la saisie contient un des ingredients de la recette
-                            document.querySelectorAll('#recipe_card_ingredient').forEach(cardIngredient => {
-                                cardIngredient.innerText.toLowerCase().includes(document.querySelector('#search_input').value)
-                            }))
-                        ){
-                            card.classList.add('hidden')
-                        } 
-                    }
-                }            
-
+                // Tri via la barre de recherche
+                searchbarFilter (allCardsRecipesArray, recipeCards)
+        
                 // Tableau contenant tous les tags visuels
                 let tagsArray = []
                 document.querySelector('#all_tags').childNodes.forEach(tagItem => {
                     tagsArray.push(tagItem.textContent.toLowerCase())
                 })
-
-                // Ajout de marqueurs sur les recettes par rapport aux tags 
-                for (let recipe of recipes){
-
-                    // Filtrage par rapport aux tags ingrédients
-                    if(document.querySelector('#all_tags').contains(document.querySelector('#ingredient_tag'))){
-
-                        document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
-
-                            if (tagsArray.includes(ingredient.textContent.toLowerCase())){
-                                ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('ingredient_filter_on')
-                            } 
-                        })
-
-                    } else {
-                        document.querySelectorAll('#recipe_card').forEach(card => {
-                            card.classList.add('ingredient_filter_on')
-                        })
-                    }
-
-                    // Filtrage par rapport aux tags appareils
-                    if(document.querySelector('#all_tags').contains(document.querySelector('#appareil_tag'))){
-
-                        if(tagsArray.includes(recipe.appliance.toLowerCase())){
-            
-                            document.querySelectorAll('#recipe_card').forEach(card => {
-            
-                                if (card.dataset.id == recipe.id.toString()){
-                                    card.classList.add('appareil_filter_on')
-                                }
-                            })
-                        }
-
-                    } else {
-                        document.querySelectorAll('#recipe_card').forEach(card => {
-                            card.classList.add('appareil_filter_on')
-                        })
-                    }
-
-                    // Filtrage par rapport aux tags ustensils
-                    // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
-
-                    // On ajoute tous les tag ustensils dans un tableau
-                    let ustensilTagArray = []
-                    document.querySelectorAll('#ustensil_tag').forEach(ustensilTag => {
-                        ustensilTagArray.push(ustensilTag.textContent.toLowerCase())
-                    })
-
-                    // Fonction qui vérifie que tous les éléments d'un tableau sont également contenus dans un autre tableau
-                    let compareArrays = (arr, target) => target.every(v => arr.includes(v));
-
-                    if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
-
-                        if(compareArrays(recipe.ustensils.map(ustensil => ustensil.toLowerCase()),ustensilTagArray)){
-
-                            document.querySelectorAll('#recipe_card').forEach(card => {
-
-                                if (card.dataset.id == recipe.id.toString()){
-                                    card.classList.add('ustensil_filter_on')
-                                }
-                            })
-                        } 
-
-                    } else {
-                        document.querySelectorAll('#recipe_card').forEach(card => {
-                            card.classList.add('ustensil_filter_on')
-                        })
-                    }
-                }
-
-                // Tri des recettes selon la présence des marqueurs
-                document.querySelectorAll('#recipe_card').forEach(card => {
-                    if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensil_filter_on'))){
-                        card.classList.add('hidden')
-                        card.classList.remove('ingredient_filter_on')
-                        card.classList.remove('appareil_filter_on')
-                        card.classList.remove('ustensil_filter_on')
-                    } else {
-                        card.classList.remove('ingredient_filter_on')
-                        card.classList.remove('appareil_filter_on')
-                        card.classList.remove('ustensil_filter_on')
-                    }
-                })
+        
+                // Tri via les tags
+                filtersFilter (tagsArray)
 
                 // Si la saisie est inférieure à 3 caractères et que la liste des tags est vide
                 if(document.querySelector('#search_input').value.length<=3 && !document.querySelector('#all_tags').hasChildNodes()) {
@@ -556,7 +402,7 @@ ingredientList.forEach(ingredientItem => {
     })
 })
 
-// FILTRES - FILTRE D'APPAREIL
+// FILTRE APPAREIL
 // Gestion de l'affichage des élements de la liste du filtre d'appareil
 let appareilFilter = document.querySelector('#appareil_filter')
 appareilFilter.addEventListener ('click', e =>{
@@ -678,115 +524,17 @@ appareilList.forEach(appareilItem => {
                 let allCardsRecipesArray = []
                 currentRecipes(allCardsRecipesArray)
         
-                // Tri des recettes par rapport à la barre de recherche
-                for(let card of recipeCards){
-                                    
-                    // Vise uniquement les recettes qui ne sont pas cachées grâce à leur id
-                    if(allCardsRecipesArray.includes(card.dataset.id)){       
-                        // Cache la recette si elle valide l'inverse des conditions suivantes: 
-                        if(!(
-                            // Si la saisie contient le titre de la recette
-                            card.querySelector('#recipe_title').textContent.toLowerCase().includes(document.querySelector('#search_input').value) ||
-                            // Si la saisie contient un mot de la description
-                            card.querySelector('#recipe_description').textContent.toLowerCase().includes(document.querySelector('#search_input').value) ||
-                            // Si la saisie contient un des ingredients de la recette
-                            document.querySelectorAll('#recipe_card_ingredient').forEach(cardIngredient => {
-                                cardIngredient.innerText.toLowerCase().includes(document.querySelector('#search_input').value)
-                            }))
-                        ){
-                            card.classList.add('hidden')
-                        } 
-                    }
-                }            
-
+                // Tri via la barre de recherche
+                searchbarFilter (allCardsRecipesArray, recipeCards)
+        
                 // Tableau contenant tous les tags visuels
                 let tagsArray = []
                 document.querySelector('#all_tags').childNodes.forEach(tagItem => {
                     tagsArray.push(tagItem.textContent.toLowerCase())
                 })
-
-                // Ajout de marqueurs sur les recettes par rapport aux tags 
-                for (let recipe of recipes){
-
-                    // Filtrage par rapport aux tags ingrédients
-                    if(document.querySelector('#all_tags').contains(document.querySelector('#ingredient_tag'))){
-
-                        document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
-
-                            if (tagsArray.includes(ingredient.textContent.toLowerCase())){
-                                ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('ingredient_filter_on')
-                            } 
-                        })
-
-                    } else {
-                        document.querySelectorAll('#recipe_card').forEach(card => {
-                            card.classList.add('ingredient_filter_on')
-                        })
-                    }
-
-                    // Filtrage par rapport aux tags appareils
-                    if(document.querySelector('#all_tags').contains(document.querySelector('#appareil_tag'))){
-
-                        if(tagsArray.includes(recipe.appliance.toLowerCase())){
-            
-                            document.querySelectorAll('#recipe_card').forEach(card => {
-            
-                                if (card.dataset.id == recipe.id.toString()){
-                                    card.classList.add('appareil_filter_on')
-                                }
-                            })
-                        }
-
-                    } else {
-                        document.querySelectorAll('#recipe_card').forEach(card => {
-                            card.classList.add('appareil_filter_on')
-                        })
-                    }
-
-                    // Filtrage par rapport aux tags ustensils
-                    // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
-
-                    // On ajoute tous les tag ustensils dans un tableau
-                    let ustensilTagArray = []
-                    document.querySelectorAll('#ustensil_tag').forEach(ustensilTag => {
-                        ustensilTagArray.push(ustensilTag.textContent.toLowerCase())
-                    })
-
-                    // Fonction qui vérifie que tous les éléments d'un tableau sont également contenus dans un autre tableau
-                    let compareArrays = (arr, target) => target.every(v => arr.includes(v));
-                    
-                    if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
-
-                        if(compareArrays(recipe.ustensils.map(ustensil => ustensil.toLowerCase()),ustensilTagArray)){
-
-                            document.querySelectorAll('#recipe_card').forEach(card => {
-
-                                if (card.dataset.id == recipe.id.toString()){
-                                    card.classList.add('ustensil_filter_on')
-                                }
-                            })
-                        } 
-
-                    } else {
-                        document.querySelectorAll('#recipe_card').forEach(card => {
-                            card.classList.add('ustensil_filter_on')
-                        })
-                    }
-                }
-
-                // Tri des recettes selon la présence des marqueurs
-                document.querySelectorAll('#recipe_card').forEach(card => {
-                    if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensil_filter_on'))){
-                        card.classList.add('hidden')
-                        card.classList.remove('ingredient_filter_on')
-                        card.classList.remove('appareil_filter_on')
-                        card.classList.remove('ustensil_filter_on')
-                    } else {
-                        card.classList.remove('ingredient_filter_on')
-                        card.classList.remove('appareil_filter_on')
-                        card.classList.remove('ustensil_filter_on')
-                    }
-                })
+        
+                // Tri via les tags
+                filtersFilter (tagsArray)
 
                 // Si la saisie est inférieure à 3 caractères et que la liste des tags est vide
                 if(document.querySelector('#search_input').value.length<=3 && !document.querySelector('#all_tags').hasChildNodes()) {
@@ -799,7 +547,7 @@ appareilList.forEach(appareilItem => {
     })
 })
 
-// FILTRES - FILTRE D'USTENSIL
+// FILTRE USTENSIL
 // Gestion de l'affichage des élements de la liste du filtre d'ustensil
 let ustensilFilter = document.querySelector('#ustensils_filter')
 ustensilFilter.addEventListener('click', e =>{
@@ -922,115 +670,17 @@ ustensilList.forEach(ustensilItem => {
                 let allCardsRecipesArray = []
                 currentRecipes(allCardsRecipesArray)
         
-                // Tri des recettes par rapport à la barre de recherche
-                for(let card of recipeCards){
-                                    
-                    // Vise uniquement les recettes qui ne sont pas cachées grâce à leur id
-                    if(allCardsRecipesArray.includes(card.dataset.id)){       
-                        // Cache la recette si elle valide l'inverse des conditions suivantes: 
-                        if(!(
-                            // Si la saisie contient le titre de la recette
-                            card.querySelector('#recipe_title').textContent.toLowerCase().includes(document.querySelector('#search_input').value) ||
-                            // Si la saisie contient un mot de la description
-                            card.querySelector('#recipe_description').textContent.toLowerCase().includes(document.querySelector('#search_input').value) ||
-                            // Si la saisie contient un des ingredients de la recette
-                            document.querySelectorAll('#recipe_card_ingredient').forEach(cardIngredient => {
-                                cardIngredient.innerText.toLowerCase().includes(document.querySelector('#search_input').value)
-                            }))
-                        ){
-                            card.classList.add('hidden')
-                        } 
-                    }
-                }            
-
+                // Tri via la barre de recherche
+                searchbarFilter (allCardsRecipesArray, recipeCards)
+        
                 // Tableau contenant tous les tags visuels
                 let tagsArray = []
                 document.querySelector('#all_tags').childNodes.forEach(tagItem => {
                     tagsArray.push(tagItem.textContent.toLowerCase())
                 })
-
-                // Ajout de marqueurs sur les recettes par rapport aux tags 
-                for (let recipe of recipes){
-
-                    // Filtrage par rapport aux tags ingrédients
-                    if(document.querySelector('#all_tags').contains(document.querySelector('#ingredient_tag'))){
-
-                        document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient =>{
-
-                            if (tagsArray.includes(ingredient.textContent.toLowerCase())){
-                                ingredient.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('ingredient_filter_on')
-                            } 
-                        })
-
-                    } else {
-                        document.querySelectorAll('#recipe_card').forEach(card => {
-                            card.classList.add('ingredient_filter_on')
-                        })
-                    }
-
-                    // Filtrage par rapport aux tags appareils
-                    if(document.querySelector('#all_tags').contains(document.querySelector('#appareil_tag'))){
-
-                        if(tagsArray.includes(recipe.appliance.toLowerCase())){
-            
-                            document.querySelectorAll('#recipe_card').forEach(card => {
-            
-                                if (card.dataset.id == recipe.id.toString()){
-                                    card.classList.add('appareil_filter_on')
-                                }
-                            })
-                        }
-
-                    } else {
-                        document.querySelectorAll('#recipe_card').forEach(card => {
-                            card.classList.add('appareil_filter_on')
-                        })
-                    }
-
-                    // Filtrage par rapport aux tags ustensils
-                    // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
-
-                    // On ajoute tous les tag ustensils dans un tableau
-                    let ustensilTagArray = []
-                    document.querySelectorAll('#ustensil_tag').forEach(ustensilTag => {
-                        ustensilTagArray.push(ustensilTag.textContent.toLowerCase())
-                    })
-
-                    // Fonction qui vérifie que tous les éléments d'un tableau sont également contenus dans un autre tableau
-                    let compareArrays = (arr, target) => target.every(v => arr.includes(v));
-                    
-                    if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
-
-                        if(compareArrays(recipe.ustensils.map(ustensil => ustensil.toLowerCase()),ustensilTagArray)){
-
-                            document.querySelectorAll('#recipe_card').forEach(card => {
-
-                                if (card.dataset.id == recipe.id.toString()){
-                                    card.classList.add('ustensil_filter_on')
-                                }
-                            })
-                        } 
-
-                    } else {
-                        document.querySelectorAll('#recipe_card').forEach(card => {
-                            card.classList.add('ustensil_filter_on')
-                        })
-                    }
-                }
-
-                // Tri des recettes selon la présence des marqueurs
-                document.querySelectorAll('#recipe_card').forEach(card => {
-                    if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensil_filter_on'))){
-                        card.classList.add('hidden')
-                        card.classList.remove('ingredient_filter_on')
-                        card.classList.remove('appareil_filter_on')
-                        card.classList.remove('ustensil_filter_on')
-                    } else {
-                        card.classList.remove('ingredient_filter_on')
-                        card.classList.remove('appareil_filter_on')
-                        card.classList.remove('ustensil_filter_on')
-                    }
-                })
+        
+                // Tri via les tags
+                filtersFilter (tagsArray)
 
                 // Si la saisie est inférieure à 3 caractères et que la liste des tags est vide
                 if(document.querySelector('#search_input').value.length<=3 && !document.querySelector('#all_tags').hasChildNodes()) {
