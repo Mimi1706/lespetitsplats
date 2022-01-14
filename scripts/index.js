@@ -173,13 +173,13 @@ mainSearchBar.onkeyup = (e)=>{
             }
 
             // Vérifie que tous les éléments d'un array sont également contenus dans un autre array
-            let checker = (arr, target) => target.every(v => arr.includes(v));
+            let compareArrays = (arr, target) => target.every(v => arr.includes(v));
 
             // Filtrage par rapport aux tags ustensils
             // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
             if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
 
-                if(checker(recipe.ustensils,ustensilTagArray)){
+                if(compareArrays(recipe.ustensils,ustensilTagArray)){
 
                     document.querySelectorAll('#recipe_card').forEach(card => {
 
@@ -272,13 +272,13 @@ mainSearchBar.onkeyup = (e)=>{
             })
 
             // Vérifie que tous les éléments d'un array sont également contenus dans un autre array
-            let checker = (arr, target) => target.every(v => arr.includes(v));
+            let compareArrays = (arr, target) => target.every(v => arr.includes(v));
 
             // Filtrage par rapport aux tags ustensils
             // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
             if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
 
-                if(checker(recipe.ustensils,ustensilTagArray)){
+                if(compareArrays(recipe.ustensils,ustensilTagArray)){
 
                     document.querySelectorAll('#recipe_card').forEach(card => {
 
@@ -496,13 +496,13 @@ ingredientList.forEach(ingredientItem => {
                     }
 
                     // Vérifie que tous les éléments d'un array sont également contenus dans un autre array
-                    let checker = (arr, target) => target.every(v => arr.includes(v));
+                    let compareArrays = (arr, target) => target.every(v => arr.includes(v));
 
                     // Filtrage par rapport aux tags ustensils
                     // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
                     if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
 
-                        if(checker(recipe.ustensils,ustensilTagArray)){
+                        if(compareArrays(recipe.ustensils,ustensilTagArray)){
 
                             document.querySelectorAll('#recipe_card').forEach(card => {
 
@@ -732,13 +732,13 @@ appareilList.forEach(appareilItem => {
                     }
 
                     // Vérifie que tous les éléments d'un array sont également contenus dans un autre array
-                    let checker = (arr, target) => target.every(v => arr.includes(v));
+                    let compareArrays = (arr, target) => target.every(v => arr.includes(v));
 
                     // Filtrage par rapport aux tags ustensils
                     // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
                     if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
 
-                        if(checker(recipe.ustensils,ustensilTagArray)){
+                        if(compareArrays(recipe.ustensils,ustensilTagArray)){
 
                             document.querySelectorAll('#recipe_card').forEach(card => {
 
@@ -969,13 +969,13 @@ ustensilList.forEach(ustensilItem => {
                     }
 
                     // Vérifie que tous les éléments d'un array sont également contenus dans un autre array
-                    let checker = (arr, target) => target.every(v => arr.includes(v));
+                    let compareArrays = (arr, target) => target.every(v => arr.includes(v));
 
                     // Filtrage par rapport aux tags ustensils
                     // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
                     if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
 
-                        if(checker(recipe.ustensils,ustensilTagArray)){
+                        if(compareArrays(recipe.ustensils,ustensilTagArray)){
 
                             document.querySelectorAll('#recipe_card').forEach(card => {
 
