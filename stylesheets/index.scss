@@ -1,13 +1,4 @@
-// General
-@mixin button_filter_style {
-    text-overflow: ellipsis;
-    color: white;
-    width: 100%;
-    text-align: left;
-    border: none;
-    padding: 1em;
-}
-
+////////////// GENERAL //////////////
 .hidden{
     display: none;
 }
@@ -16,12 +7,31 @@
     display: none;
 }
 
-// Colors
+// style des filtres
+@mixin button_filter_style {
+    text-overflow: ellipsis;
+    color: white;
+    width: 100%;
+    text-align: left;
+    border: none;
+    padding: 1em;
+
+    &:hover{
+        width: 130%;
+        transition: all 200ms ease-in-out;
+        z-index: 1000;
+    }
+}
+
+////////////// COULEURS //////////////
 $ingredient : #3282F7;
 $appareil : #68D9A4;
 $ustensil : #ED6454;
 
-// Header - Desktop version
+
+////////////// VERSION DESKTOP //////////////
+
+// Header - Version Desktop
 header{
     
     .logo{
@@ -33,14 +43,15 @@ header{
         }
     }
 
+    // Barre de recherche & Filtres
     .container{
 
+        // Barre de recherche
         nav{    
             padding: 0px;
             margin-bottom: 0.5em;
 
             #search_wrapper{
-
                 background-color: #E7E7E7;
                 border-radius: 0.2em;
                 width: 100%;
@@ -69,6 +80,7 @@ header{
             }
         }
 
+        // Liste des tags
         #all_tags{
             margin-bottom: 0.5em;
 
@@ -99,6 +111,7 @@ header{
             }
         }
 
+        // Boutons de filtre
         #dropdown_filters{
 
             #filter_dropdown{
@@ -164,6 +177,7 @@ header{
                     opacity: 1;
                 }
 
+                // Conteneur des élements du filtre
                 .dropdown-multicol{
                     padding:0;
                     margin:0;
@@ -189,11 +203,11 @@ header{
                             padding: 0.2em 1em;
                         }
 
-                        .dropdown-item:hover{
+                        &:hover{
                             color:grey;
                         }
 
-                        .dropdown-item:active{
+                        &:active{
                             color:white;
                             background-color:inherit;
                         }
@@ -204,11 +218,12 @@ header{
     }
 }
 
-// Body - Desktop version
+// Body - Version Desktop
 body{
     padding: 2em 0em;
 }
 
+// Cartes recettes
 main{
 
     .container{
@@ -270,7 +285,7 @@ main{
     }
 }
 
-// Smartphone version
+////////////// VERSION SMARTPHONE & TABLETTE //////////////
 @media(max-width:990px){
 
     body{
@@ -279,8 +294,10 @@ main{
 
     header{
     
+        // Barre de recherche & Filtres
         .container{
 
+            // Barre de recherche
             nav{
         
                 #search_wrapper{
@@ -295,6 +312,7 @@ main{
                 }
             }
 
+            // Filtres
             #dropdown_filters{
     
                 #filter_dropdown{
