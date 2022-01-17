@@ -109,13 +109,12 @@ header{
         #dropdown_filters{
 
             // Boutons de filtre
-            #filter_dropdown{
+            .filter_dropdown{
                 padding:0;
 
                 #ingredients_filter{
                     background-color: $ingredient;
                     @include button_filter_style;
-
                 }
 
                 #appareil_filter{
@@ -142,10 +141,6 @@ header{
                         position: absolute;
                         justify-content: center;
                         font-size: 1.2em;
-                    }
-
-                    .fa-chevron-up{
-                        display: none;
                     }
                 }
 
@@ -312,7 +307,7 @@ main{
             // Filtres
             #dropdown_filters{
     
-                #filter_dropdown{
+                .filter_dropdown{
     
                     .dropdown-multicol{
                         width: 100%;

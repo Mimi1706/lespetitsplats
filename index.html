@@ -44,13 +44,12 @@
             <div class="row mb-3" id="dropdown_filters">
                 
                 <!-- Filtre d'ingrédients -->
-                <div id="filter_dropdown" class="col-lg-3 mb-2 mr-lg-2">
+                <div class="col-lg-3 mb-2 mr-lg-2 filter_dropdown">
 
                     <input class="btn dropdown" placeholder="Ingredients" data-toggle="dropdown" type="search" id="ingredients_filter" onfocus="this.placeholder='Rechercher un ingrédient'" onblur="this.placeholder='Ingredients'; this.value=''" >
 
                     <div class="menu_arrow">
-                        <i class="fas fa-chevron-up"></i>
-                        <i class="fas fa-chevron-down"></i>
+                        <i id="chevron_ingredient" class="fas fa-chevron-down"></i>
                     </div>
                     
                     <div id="ingredients_dropdown_menu" class="dropdown-menu dropdown-multicol">
@@ -62,13 +61,12 @@
                     </div>
                 </div>
 
-                <div id="filter_dropdown" class="col-lg-3 mb-2 mr-lg-2">
+                <div class="col-lg-3 mb-2 mr-lg-2 filter_dropdown">
 
                     <input class="btn dropdown" placeholder="Appareil" data-toggle="dropdown" type="search" id="appareil_filter" onfocus="this.placeholder='Rechercher un appareil'" onblur="this.placeholder='Appareil'; this.value=''">
 
                     <div class="menu_arrow">
-                        <i class="fas fa-chevron-up"></i>
-                        <i class="fas fa-chevron-down"></i>
+                        <i id="chevron_appareil" class="fas fa-chevron-down"></i>
                     </div>
                     
                     <div id="appareil_dropdown_menu" class="dropdown-menu dropdown-multicol">
@@ -80,13 +78,12 @@
                     </div>
                 </div>
 
-                <div id="filter_dropdown" class="col-lg-3 mb-2 mr-lg-2">
+                <div class="col-lg-3 mb-2 mr-lg-2 filter_dropdown">
 
                     <input class="btn dropdown" placeholder="Ustensils" data-toggle="dropdown" type="search" id="ustensils_filter" onfocus="this.placeholder='Rechercher un ustensil'" onblur="this.placeholder='Ustensils'; this.value=''">
 
                     <div class="menu_arrow">
-                        <i class="fas fa-chevron-up"></i>
-                        <i class="fas fa-chevron-down"></i>
+                        <i id="chevron_ustensil" class="fas fa-chevron-down"></i>
                     </div>
                     
                     <div id="ustensils_dropdown_menu" class="dropdown-menu dropdown-multicol">
@@ -113,15 +110,14 @@
 
         </section>
     </main>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="module" src="scripts/index.js"></script>
+    <script type="module" src="scripts/recipes.js"></script>
     
 </body>
-
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
-<script type="module" src="scripts/index.js"></script>
-<script type="module" src="scripts/recipes.js"></script>
 
 </html>

@@ -65,10 +65,10 @@ header .container #all_tags #appareil_tag {
 header .container #all_tags #ustensil_tag {
   background-color: #ED6454;
 }
-header .container #dropdown_filters #filter_dropdown {
+header .container #dropdown_filters .filter_dropdown {
   padding: 0;
 }
-header .container #dropdown_filters #filter_dropdown #ingredients_filter {
+header .container #dropdown_filters .filter_dropdown #ingredients_filter {
   background-color: #3282F7;
   text-overflow: ellipsis;
   color: white;
@@ -77,7 +77,7 @@ header .container #dropdown_filters #filter_dropdown #ingredients_filter {
   border: none;
   padding: 1em;
 }
-header .container #dropdown_filters #filter_dropdown #appareil_filter {
+header .container #dropdown_filters .filter_dropdown #appareil_filter {
   background-color: #68D9A4;
   text-overflow: ellipsis;
   color: white;
@@ -86,7 +86,7 @@ header .container #dropdown_filters #filter_dropdown #appareil_filter {
   border: none;
   padding: 1em;
 }
-header .container #dropdown_filters #filter_dropdown #ustensils_filter {
+header .container #dropdown_filters .filter_dropdown #ustensils_filter {
   background-color: #ED6454;
   text-overflow: ellipsis;
   color: white;
@@ -95,7 +95,7 @@ header .container #dropdown_filters #filter_dropdown #ustensils_filter {
   border: none;
   padding: 1em;
 }
-header .container #dropdown_filters #filter_dropdown .menu_arrow {
+header .container #dropdown_filters .filter_dropdown .menu_arrow {
   color: white;
   align-items: center;
   position: absolute;
@@ -105,33 +105,30 @@ header .container #dropdown_filters #filter_dropdown .menu_arrow {
   display: flex;
   pointer-events: none;
 }
-header .container #dropdown_filters #filter_dropdown .menu_arrow .fas {
+header .container #dropdown_filters .filter_dropdown .menu_arrow .fas {
   position: absolute;
   justify-content: center;
   font-size: 1.2em;
 }
-header .container #dropdown_filters #filter_dropdown .menu_arrow .fa-chevron-up {
-  display: none;
-}
-header .container #dropdown_filters #filter_dropdown .dropdown-menu {
+header .container #dropdown_filters .filter_dropdown .dropdown-menu {
   height: 100%;
 }
-header .container #dropdown_filters #filter_dropdown #ingredients_dropdown_menu {
+header .container #dropdown_filters .filter_dropdown #ingredients_dropdown_menu {
   background-color: #3282F7;
   height: 0;
 }
-header .container #dropdown_filters #filter_dropdown #appareil_dropdown_menu {
+header .container #dropdown_filters .filter_dropdown #appareil_dropdown_menu {
   background-color: #68D9A4;
   height: 0;
 }
-header .container #dropdown_filters #filter_dropdown #ustensils_dropdown_menu {
+header .container #dropdown_filters .filter_dropdown #ustensils_dropdown_menu {
   background-color: #ED6454;
   height: 0;
 }
-header .container #dropdown_filters #filter_dropdown input::placeholder {
+header .container #dropdown_filters .filter_dropdown input::placeholder {
   opacity: 1;
 }
-header .container #dropdown_filters #filter_dropdown .dropdown-multicol {
+header .container #dropdown_filters .filter_dropdown .dropdown-multicol {
   padding: 0;
   margin: 0;
   margin-top: -5px;
@@ -139,14 +136,14 @@ header .container #dropdown_filters #filter_dropdown .dropdown-multicol {
   width: 100%;
   padding-bottom: 1em;
 }
-header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col {
+header .container #dropdown_filters .filter_dropdown .dropdown-multicol .dropdown-col {
   width: 195%;
   flex-wrap: wrap;
   background-color: inherit;
   padding: 1em 0em;
   border-radius: 0.2em;
 }
-header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item {
+header .container #dropdown_filters .filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item {
   color: white;
   width: 33.333333%;
   flex-wrap: wrap;
@@ -155,11 +152,11 @@ header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdow
   cursor: pointer;
   padding: 0.2em 1em;
 }
-header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item:hover {
+header .container #dropdown_filters .filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item:hover {
   color: grey;
   background-color: white;
 }
-header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item:active {
+header .container #dropdown_filters .filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item:active {
   color: white;
   background-color: inherit;
 }
@@ -226,13 +223,13 @@ main .container #no_result {
   header .container nav #search_wrapper #search_button {
     width: 10%;
   }
-  header .container #dropdown_filters #filter_dropdown .dropdown-multicol {
+  header .container #dropdown_filters .filter_dropdown .dropdown-multicol {
     width: 100%;
   }
-  header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col {
+  header .container #dropdown_filters .filter_dropdown .dropdown-multicol .dropdown-col {
     width: 100%;
   }
-  header .container #dropdown_filters #filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item {
+  header .container #dropdown_filters .filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item {
     width: 50%;
   }
 }
