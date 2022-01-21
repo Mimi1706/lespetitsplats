@@ -11,7 +11,6 @@
 @mixin button_filter_style {
     text-overflow: ellipsis;
     color: white;
-    width: 100%;
     text-align: left;
     border: none;
     padding: 1em;
@@ -112,19 +111,30 @@ header{
             .filter_dropdown{
                 padding:0;
 
+                .dropdown{
+                    @include button_filter_style;
+                    
+                    &:focus {
+                        width: 35vw;
+                        border-radius: 0.2em 0.2em 0 0;
+                    }
+
+                    &:focus + .menu_arrow{
+                        transform: rotate(180deg);
+                        right:8px;
+                    }
+                }
+
                 #ingredients_filter{
                     background-color: $ingredient;
-                    @include button_filter_style;
                 }
 
                 #appareil_filter{
                     background-color: $appareil;
-                    @include button_filter_style;
                 }
 
                 #ustensils_filter{
                     background-color: $ustensil;
-                    @include button_filter_style;
                 }
 
                 .menu_arrow{
@@ -171,18 +181,17 @@ header{
                 .dropdown-multicol{
                     padding:0;
                     margin:0;
-                    margin-top:-5px;
                     border: none;
                     width: 100%;
                     padding-bottom:1em;
 
                     // Tous les éléments à l'intérieur des filtres
                     .dropdown-col{ 
-                        width: 195%;
+                        width: 35vw;
                         flex-wrap: wrap;
                         background-color:inherit;
                         padding:1em 0em;
-                        border-radius: 0.2em;
+                        border-radius: 0 0 0.2em 0.2em;
 
                         .dropdown-item{
                             color:white;
@@ -308,6 +317,15 @@ main{
             #dropdown_filters{
     
                 .filter_dropdown{
+                    width: 100%;
+
+                    .dropdown{
+                        width: 100%;
+
+                        &:focus{
+                            width: 100%;
+                        }
+                    }
     
                     .dropdown-multicol{
                         width: 100%;

@@ -68,32 +68,29 @@ header .container #all_tags #ustensil_tag {
 header .container #dropdown_filters .filter_dropdown {
   padding: 0;
 }
-header .container #dropdown_filters .filter_dropdown #ingredients_filter {
-  background-color: #3282F7;
+header .container #dropdown_filters .filter_dropdown .dropdown {
   text-overflow: ellipsis;
   color: white;
-  width: 100%;
   text-align: left;
   border: none;
   padding: 1em;
+}
+header .container #dropdown_filters .filter_dropdown .dropdown:focus {
+  width: 35vw;
+  border-radius: 0.2em 0.2em 0 0;
+}
+header .container #dropdown_filters .filter_dropdown .dropdown:focus + .menu_arrow {
+  transform: rotate(180deg);
+  right: 8px;
+}
+header .container #dropdown_filters .filter_dropdown #ingredients_filter {
+  background-color: #3282F7;
 }
 header .container #dropdown_filters .filter_dropdown #appareil_filter {
   background-color: #68D9A4;
-  text-overflow: ellipsis;
-  color: white;
-  width: 100%;
-  text-align: left;
-  border: none;
-  padding: 1em;
 }
 header .container #dropdown_filters .filter_dropdown #ustensils_filter {
   background-color: #ED6454;
-  text-overflow: ellipsis;
-  color: white;
-  width: 100%;
-  text-align: left;
-  border: none;
-  padding: 1em;
 }
 header .container #dropdown_filters .filter_dropdown .menu_arrow {
   color: white;
@@ -131,17 +128,16 @@ header .container #dropdown_filters .filter_dropdown input::placeholder {
 header .container #dropdown_filters .filter_dropdown .dropdown-multicol {
   padding: 0;
   margin: 0;
-  margin-top: -5px;
   border: none;
   width: 100%;
   padding-bottom: 1em;
 }
 header .container #dropdown_filters .filter_dropdown .dropdown-multicol .dropdown-col {
-  width: 195%;
+  width: 35vw;
   flex-wrap: wrap;
   background-color: inherit;
   padding: 1em 0em;
-  border-radius: 0.2em;
+  border-radius: 0 0 0.2em 0.2em;
 }
 header .container #dropdown_filters .filter_dropdown .dropdown-multicol .dropdown-col .dropdown-item {
   color: white;
@@ -222,6 +218,15 @@ main .container #no_result {
   }
   header .container nav #search_wrapper #search_button {
     width: 10%;
+  }
+  header .container #dropdown_filters .filter_dropdown {
+    width: 100%;
+  }
+  header .container #dropdown_filters .filter_dropdown .dropdown {
+    width: 100%;
+  }
+  header .container #dropdown_filters .filter_dropdown .dropdown:focus {
+    width: 100%;
   }
   header .container #dropdown_filters .filter_dropdown .dropdown-multicol {
     width: 100%;

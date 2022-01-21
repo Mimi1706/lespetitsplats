@@ -92,32 +92,29 @@ function currentRecipes (allCardsRecipesArray){
 }
 
 // Fonction de tri via la barre de recherche
-function searchbarFilter (allCardsRecipesArray, recipeCards){
+function searchbarFilter (recipeCards){
+    
     // Tri des recettes par rapport à la barre de recherche
     for(let card of recipeCards){
-                        
-        // Vise uniquement les recettes qui ne sont pas cachées grâce à leur id
-        if(allCardsRecipesArray.includes(card.dataset.id)){  
             
-            // Récupère tous les ingrédients d'une carte recette dans un tableau
-            let ingredientArray = []
-            card.querySelectorAll('#recipe_card_ingredient').forEach(cardIngredient => {
-                ingredientArray.push(cardIngredient.innerText.toString().toLowerCase())
-            })
+        // Récupère tous les ingrédients d'une carte recette dans un tableau
+        let ingredientArray = []
+        card.querySelectorAll('#recipe_card_ingredient').forEach(cardIngredient => {
+            ingredientArray.push(cardIngredient.innerText.toString().toLowerCase())
+        })
 
-            // Cache la recette si elle valide l'inverse des conditions suivantes: 
-            if(!(
-                // Si la saisie contient le titre de la recette ou
-                card.querySelector('#recipe_title').textContent.toLowerCase().includes(document.querySelector('#search_input').value.toLowerCase()) ||
-                // Si la saisie contient un mot de la description ou
-                card.querySelector('#recipe_description').textContent.toLowerCase().includes(document.querySelector('#search_input').value.toLowerCase()) ||
-                // Si la saisie contient un des ingredients de la recette contenus dans le tableau
-                ingredientArray.join(' ').includes(document.querySelector('#search_input').value.toLowerCase())
-                )
-            ){
-                card.classList.add('hidden');
-            } 
-        }
+        // Cache la recette si elle valide l'inverse des conditions suivantes: 
+        if(!(
+            // Si la saisie contient le titre de la recette ou
+            card.querySelector('#recipe_title').textContent.toLowerCase().includes(document.querySelector('#search_input').value.toLowerCase()) ||
+            // Si la saisie contient un mot de la description ou
+            card.querySelector('#recipe_description').textContent.toLowerCase().includes(document.querySelector('#search_input').value.toLowerCase()) ||
+            // Si la saisie contient un des ingredients de la recette contenus dans le tableau
+            ingredientArray.join(' ').includes(document.querySelector('#search_input').value.toLowerCase())
+            )
+        ){
+            card.classList.add('hidden');
+        } 
     } 
 }
 
@@ -230,11 +227,8 @@ mainSearchBar.onkeyup = (e)=>{
     // Recherche déclenchée à partir de 3 caractères
     if(userData.length>=3){
 
-        let allCardsRecipesArray = [];
-        currentRecipes(allCardsRecipesArray);
-
         // Tri via la barre de recherche
-        searchbarFilter (allCardsRecipesArray, recipeCards);
+        searchbarFilter (recipeCards);
 
         // Tableau contenant tous les tags visuels
         let tagsArray = [];
@@ -244,11 +238,6 @@ mainSearchBar.onkeyup = (e)=>{
 
         // Tri via les tags
         filtersFilter (tagsArray);
-        
-        // Si la section de recettes est vide (càd aucun match de recettes), le message d'erreur s'affiche
-        if(document.getElementById('recipe_deck').innerText == ''){
-            document.getElementById('no_result').classList.remove('hidden');
-        } 
     }
 
     // Tri déclenché si la liste de tags possède des éléments et que la saisie fait moins de 3 caractères
@@ -262,12 +251,10 @@ mainSearchBar.onkeyup = (e)=>{
 
         // Tri via les tags
         filtersFilter (tagsArray);
-
     }
 
     // Si la saisie fait moins de 3 caractères et qu'aucun filtre n'est utilisé, toutes les recettes sont affichées
     if(userData.length <=3 && !document.querySelector('#all_tags').hasChildNodes()){
-        
         for(let i =0; i<recipeCards.length;i++){
             recipeCards[i].classList.remove('hidden');
         }
@@ -386,7 +373,7 @@ ingredientList.forEach(ingredientItem => {
                 currentRecipes(allCardsRecipesArray);
         
                 // Tri via la barre de recherche
-                searchbarFilter (allCardsRecipesArray, recipeCards);
+                searchbarFilter (recipeCards);
         
                 // Tableau contenant tous les tags visuels
                 let tagsArray = [];
@@ -531,7 +518,7 @@ appareilList.forEach(appareilItem => {
                 currentRecipes(allCardsRecipesArray);
         
                 // Tri via la barre de recherche
-                searchbarFilter (allCardsRecipesArray, recipeCards);
+                searchbarFilter (recipeCards);
         
                 // Tableau contenant tous les tags visuels
                 let tagsArray = [];
@@ -677,7 +664,7 @@ ustensilList.forEach(ustensilItem => {
                 currentRecipes(allCardsRecipesArray);
         
                 // Tri via la barre de recherche
-                searchbarFilter (allCardsRecipesArray, recipeCards);
+                searchbarFilter (recipeCards);
         
                 // Tableau contenant tous les tags visuels
                 let tagsArray = [];
