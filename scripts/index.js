@@ -23,7 +23,7 @@ recipes.forEach(recipe => {
     // Ajout des ingrédients de chaque recette
     recipe.ingredients.forEach(ingredient =>{
         $(`#recipe_ingredients_${recipe.id}`).append(`
-        <li><b><span id="recipe_card_ingredient">${ingredient.ingredient}<span></b>: ${ingredient.quantity ? ingredient.quantity : ''} ${ingredient.unit ? ingredient.unit : ''}</li>`);
+        <li><b><span id="recipe_card_ingredient">${ingredient.ingredient}</span></b>: ${ingredient.quantity ? ingredient.quantity: ''} ${ingredient.unit ? ingredient.unit : ''}</li>`);
     });
 });
 
@@ -92,30 +92,46 @@ function currentRecipes (allCardsRecipesArray){
 }
 
 // Fonction de tri via la barre de recherche
-function searchbarFilter (recipeCards){
-    
-    // Tri des recettes par rapport à la barre de recherche
-    for(let card of recipeCards){
-            
-        // Récupère tous les ingrédients d'une carte recette dans un tableau
-        let ingredientArray = []
-        card.querySelectorAll('#recipe_card_ingredient').forEach(cardIngredient => {
-            ingredientArray.push(cardIngredient.innerText.toString().toLowerCase())
-        })
 
-        // Cache la recette si elle valide l'inverse des conditions suivantes: 
-        if(!(
-            // Si la saisie contient le titre de la recette ou
-            card.querySelector('#recipe_title').textContent.toLowerCase().includes(document.querySelector('#search_input').value.toLowerCase()) ||
-            // Si la saisie contient un mot de la description ou
-            card.querySelector('#recipe_description').textContent.toLowerCase().includes(document.querySelector('#search_input').value.toLowerCase()) ||
-            // Si la saisie contient un des ingredients de la recette contenus dans le tableau
-            ingredientArray.join(' ').includes(document.querySelector('#search_input').value.toLowerCase())
-            )
-        ){
-            card.classList.add('hidden');
-        } 
-    } 
+// Ajout le nom des recettes, description et ingrédients dans un tableau
+var dataBase = new Map();
+let recipeCards = document.querySelectorAll('#recipe_card');
+for(let card of recipeCards){
+        
+    // Tableau temporaire
+    var temporaryDataBase = [];
+    temporaryDataBase.push(card.querySelector('#recipe_title').textContent.toLowerCase());
+    temporaryDataBase.push(card.querySelector('#recipe_description').textContent.toLowerCase());
+    card.querySelectorAll('#recipe_card_ingredient').forEach(cardIngredient => {
+        temporaryDataBase.push(cardIngredient.innerText.toLowerCase())
+    });
+
+    // Chaque tableau temporaire est associé à l'id de sa recette et inséré dans un tableau
+    dataBase.set(card.dataset.id, temporaryDataBase)
+};
+
+function searchbarFilter (recipeCards){
+
+    // Tableau contenant l'id des résultats
+    let idResult = []
+
+    for(var [id, data] of dataBase){
+        data.forEach((dataValue) => {
+
+            if (dataValue.includes(document.querySelector('#search_input').value.toLowerCase())){
+
+                // Récupère l'id 
+                idResult.push(id)
+            }
+        })
+    }
+
+    // Les cartes recettes dont l'id ne correspond pas sont cachées
+    recipeCards.forEach(card =>{
+        if(!idResult.includes(card.dataset.id)){
+            card.classList.add('hidden')
+        }
+    })
 }
 
 // Fonction de tri via les tags

@@ -1742,7 +1742,7 @@ function algo1 (recipes){
             recipe.description.toLowerCase().includes(searchInput.toLowerCase()) ||
             ingredientArray.join(' ').includes(searchInput.toLowerCase())
         ){
-            console.log(recipe.id)
+            //console.log(recipe.id)
         };
     };
 };
@@ -1764,13 +1764,11 @@ var dataBase = new Map();
         dataBase.set(recipe.id,temporaryDataBase)
     };
 
-    console.log(temporaryDataBase)
-
     for(var [id, data] of dataBase){
 
-        data.forEach((value) => {
-            if (value.includes(searchInput)){
-                console.log(id)
+        data.forEach((dataValue) => {
+            if (dataValue.includes(searchInput)){
+                //console.log(id)
             }
         });
     };
