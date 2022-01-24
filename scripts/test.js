@@ -1766,8 +1766,8 @@ var dataBase = new Map();
 
     for(var [id, data] of dataBase){
 
-        data.forEach((value) => {
-            if (value.includes(searchInput)){
+        data.forEach((dataValue) => {
+            if (dataValue.includes(searchInput)){
                 //console.log(id)
             }
         });
