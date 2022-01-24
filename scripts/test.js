@@ -1728,7 +1728,7 @@ const recipes = [
 let searchInput = "fraise";
 
 // ALGORITHME 1
-function algo1 (recipes){
+function algo1 (){
     
     for(let recipe of recipes){
 
@@ -1747,10 +1747,10 @@ function algo1 (recipes){
     };
 };
 
-algo1(recipes);
+algo1();
 
 // ALGORITHME 2
-function algo2 (recipes){
+function algo2 (){
 
 var dataBase = new Map();
 
@@ -1774,4 +1774,4 @@ var dataBase = new Map();
     };
 };
 
-algo2(recipes);
+algo2();
