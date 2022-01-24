@@ -92,25 +92,23 @@ function currentRecipes (allCardsRecipesArray){
 }
 
 // Fonction de tri via la barre de recherche
-
-// Ajout le nom des recettes, description et ingrédients dans un tableau
-var dataBase = new Map();
-let recipeCards = document.querySelectorAll('#recipe_card');
-for(let card of recipeCards){
-        
-    // Tableau temporaire
-    var temporaryDataBase = [];
-    temporaryDataBase.push(card.querySelector('#recipe_title').textContent.toLowerCase());
-    temporaryDataBase.push(card.querySelector('#recipe_description').textContent.toLowerCase());
-    card.querySelectorAll('#recipe_card_ingredient').forEach(cardIngredient => {
-        temporaryDataBase.push(cardIngredient.innerText.toLowerCase())
-    });
-
-    // Chaque tableau temporaire est associé à l'id de sa recette et inséré dans un tableau
-    dataBase.set(card.dataset.id, temporaryDataBase)
-};
-
 function searchbarFilter (recipeCards){
+
+    // Ajout du nom des recettes, description et ingrédients dans un tableau
+    var dataBase = new Map();
+    for(let card of recipeCards){
+            
+        // Tableau temporaire
+        var temporaryDataBase = [];
+        temporaryDataBase.push(card.querySelector('#recipe_title').textContent.toLowerCase());
+        temporaryDataBase.push(card.querySelector('#recipe_description').textContent.toLowerCase());
+        card.querySelectorAll('#recipe_card_ingredient').forEach(cardIngredient => {
+            temporaryDataBase.push(cardIngredient.innerText.toLowerCase())
+        });
+
+        // Chaque tableau temporaire est associé à l'id de sa recette et inséré dans un tableau
+        dataBase.set(card.dataset.id, temporaryDataBase)
+    };
 
     // Tableau contenant l'id des résultats
     let idResult = []
@@ -120,13 +118,13 @@ function searchbarFilter (recipeCards){
 
             if (dataValue.includes(document.querySelector('#search_input').value.toLowerCase())){
 
-                // Récupère l'id 
+                // Récupère l'id et la met dans le tableau d'id des résultats
                 idResult.push(id)
             }
         })
     }
 
-    // Les cartes recettes dont l'id ne correspond pas sont cachées
+    // Les cartes recettes dont l'id ne correspond pas aux id du tableau sont cachées
     recipeCards.forEach(card =>{
         if(!idResult.includes(card.dataset.id)){
             card.classList.add('hidden')
