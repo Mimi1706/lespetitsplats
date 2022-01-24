@@ -257,7 +257,7 @@ mainSearchBar.onkeyup = (e)=>{
     }
 
     // Tri déclenché si la liste de tags possède des éléments et que la saisie fait moins de 3 caractères
-    if(userData.length <=3 && document.querySelector('#all_tags').hasChildNodes()){
+    if(userData.length <3 && document.querySelector('#all_tags').hasChildNodes()){
 
         // Tableau contenant tous les tags visuels
         let tagsArray = [];
@@ -270,7 +270,7 @@ mainSearchBar.onkeyup = (e)=>{
     }
 
     // Si la saisie fait moins de 3 caractères et qu'aucun filtre n'est utilisé, toutes les recettes sont affichées
-    if(userData.length <=3 && !document.querySelector('#all_tags').hasChildNodes()){
+    if(userData.length <3 && !document.querySelector('#all_tags').hasChildNodes()){
         for(let i =0; i<recipeCards.length;i++){
             recipeCards[i].classList.remove('hidden');
         }
@@ -401,7 +401,7 @@ ingredientList.forEach(ingredientItem => {
                 filtersFilter (tagsArray);
 
                 // Si la saisie est inférieure à 3 caractères et que la liste des tags est vide
-                if(document.querySelector('#search_input').value.length<=3 && !document.querySelector('#all_tags').hasChildNodes()) {
+                if(document.querySelector('#search_input').value.length<3 && !document.querySelector('#all_tags').hasChildNodes()) {
                     for(let i =0; i<recipeCards.length;i++){
                         recipeCards[i].classList.remove('hidden');
                     }
@@ -546,7 +546,7 @@ appareilList.forEach(appareilItem => {
                 filtersFilter (tagsArray);
 
                 // Si la saisie est inférieure à 3 caractères et que la liste des tags est vide
-                if(document.querySelector('#search_input').value.length<=3 && !document.querySelector('#all_tags').hasChildNodes()) {
+                if(document.querySelector('#search_input').value.length<3 && !document.querySelector('#all_tags').hasChildNodes()) {
                     for(let i =0; i<recipeCards.length;i++){
                         recipeCards[i].classList.remove('hidden');
                     }
@@ -692,7 +692,7 @@ ustensilList.forEach(ustensilItem => {
                 filtersFilter (tagsArray);
 
                 // Si la saisie est inférieure à 3 caractères et que la liste des tags est vide
-                if(document.querySelector('#search_input').value.length<=3 && !document.querySelector('#all_tags').hasChildNodes()) {
+                if(document.querySelector('#search_input').value.length<3 && !document.querySelector('#all_tags').hasChildNodes()) {
                     for(let i =0; i<recipeCards.length;i++){
                         recipeCards[i].classList.remove('hidden');
                     }
