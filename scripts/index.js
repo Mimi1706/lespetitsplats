@@ -82,10 +82,10 @@ for (let i = 0; i< ustensilArrayUnique.length; i++){
 // Fonction de récupération de l'id des cartes présentes dans la page
 function currentRecipes (allCardsRecipesArray){
     let allCardRecipes = document.querySelectorAll('#recipe_card');
-    allCardRecipes.forEach(recipe => {
+    allCardRecipes.forEach(card => {
 
-        if(!recipe.classList.contains('hidden')){
-            allCardsRecipesArray.push(recipe.dataset.id);
+        if(!card.classList.contains('hidden')){
+            allCardsRecipesArray.push(card.dataset.id);
         }
     });
     return allCardsRecipesArray;
@@ -238,6 +238,15 @@ mainSearchBar.onkeyup = (e)=>{
 
         // Tri via les tags
         filtersFilter (tagsArray);
+
+        // Vérifie le nombre de cartes recettes présentes
+        let allCardsRecipesArray = [];
+        currentRecipes (allCardsRecipesArray);
+
+        // Si aucune carte recette n'est affichée, on montre le message d'erreur
+        if(allCardsRecipesArray.length === 0){
+            document.getElementById('no_result').classList.remove('hidden');
+        }
     }
 
     // Tri déclenché si la liste de tags possède des éléments et que la saisie fait moins de 3 caractères
@@ -368,9 +377,6 @@ ingredientList.forEach(ingredientItem => {
                 for(let i =0; i<recipeCards.length;i++){
                     recipeCards[i].classList.remove('hidden');
                 }
-
-                let allCardsRecipesArray = [];
-                currentRecipes(allCardsRecipesArray);
         
                 // Tri via la barre de recherche
                 searchbarFilter (recipeCards);
@@ -513,9 +519,6 @@ appareilList.forEach(appareilItem => {
                 for(let i =0; i<recipeCards.length;i++){
                     recipeCards[i].classList.remove('hidden');
                 }
-
-                let allCardsRecipesArray = [];
-                currentRecipes(allCardsRecipesArray);
         
                 // Tri via la barre de recherche
                 searchbarFilter (recipeCards);
@@ -659,9 +662,6 @@ ustensilList.forEach(ustensilItem => {
                 for(let i =0; i<recipeCards.length;i++){
                     recipeCards[i].classList.remove('hidden');
                 }
-
-                let allCardsRecipesArray = [];
-                currentRecipes(allCardsRecipesArray);
         
                 // Tri via la barre de recherche
                 searchbarFilter (recipeCards);
