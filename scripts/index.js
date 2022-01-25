@@ -4,8 +4,7 @@ import { recipes } from "./recipes.js";
 let recipesSection = $('#recipe_deck');
 recipes.forEach(recipe => {
 
-    recipesSection.append(`
-    <div class="col-lg-4 col-md-6 col-sm-12" id="recipe_card" data-id=${recipe.id}>
+    recipesSection.append(`<div class="col-lg-4 col-md-6 col-sm-12" id="recipe_card" data-id=${recipe.id}>
         <div id="recipe_image"><img src="" class="card-img-top" alt=""></div>
         <div class="card-body">
             <div class="row d-flex align-items-center">
@@ -17,8 +16,7 @@ recipes.forEach(recipe => {
                 <p class="col-7" id="recipe_description">${recipe.description}</p>
             </div>
         </div>
-    </div>
-    `);
+    </div>`);
 
     // Ajout des ingrédients de chaque recette
     recipe.ingredients.forEach(ingredient =>{
@@ -82,10 +80,10 @@ for (let i = 0; i< ustensilArrayUnique.length; i++){
 // Fonction de récupération de l'id des cartes présentes dans la page
 function currentRecipes (allCardsRecipesArray){
     let allCardRecipes = document.querySelectorAll('#recipe_card');
-    allCardRecipes.forEach(recipe => {
+    allCardRecipes.forEach(card => {
 
-        if(!recipe.classList.contains('hidden')){
-            allCardsRecipesArray.push(recipe.dataset.id);
+        if(!card.classList.contains('hidden')){
+            allCardsRecipesArray.push(card.dataset.id);
         }
     });
     return allCardsRecipesArray;
@@ -252,6 +250,13 @@ mainSearchBar.onkeyup = (e)=>{
 
         // Tri via les tags
         filtersFilter (tagsArray);
+
+        let allCardsRecipesArray = [];
+        currentRecipes (allCardsRecipesArray);
+
+        if(allCardsRecipesArray.length === 0){
+            document.getElementById('no_result').classList.remove('hidden');
+        }
     }
 
     // Tri déclenché si la liste de tags possède des éléments et que la saisie fait moins de 3 caractères
