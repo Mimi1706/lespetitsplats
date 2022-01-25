@@ -382,9 +382,6 @@ ingredientList.forEach(ingredientItem => {
                 for(let i =0; i<recipeCards.length;i++){
                     recipeCards[i].classList.remove('hidden');
                 }
-
-                let allCardsRecipesArray = [];
-                currentRecipes(allCardsRecipesArray);
         
                 // Tri via la barre de recherche
                 searchbarFilter (recipeCards);
@@ -527,9 +524,6 @@ appareilList.forEach(appareilItem => {
                 for(let i =0; i<recipeCards.length;i++){
                     recipeCards[i].classList.remove('hidden');
                 }
-
-                let allCardsRecipesArray = [];
-                currentRecipes(allCardsRecipesArray);
         
                 // Tri via la barre de recherche
                 searchbarFilter (recipeCards);
@@ -673,9 +667,6 @@ ustensilList.forEach(ustensilItem => {
                 for(let i =0; i<recipeCards.length;i++){
                     recipeCards[i].classList.remove('hidden');
                 }
-
-                let allCardsRecipesArray = [];
-                currentRecipes(allCardsRecipesArray);
         
                 // Tri via la barre de recherche
                 searchbarFilter (recipeCards);
