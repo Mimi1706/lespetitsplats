@@ -251,9 +251,11 @@ mainSearchBar.onkeyup = (e)=>{
         // Tri via les tags
         filtersFilter (tagsArray);
 
+        // Vérifie le nombre de cartes recettes présentes
         let allCardsRecipesArray = [];
         currentRecipes (allCardsRecipesArray);
 
+        // Si aucune carte recette n'est affichée, on montre le message d'erreur
         if(allCardsRecipesArray.length === 0){
             document.getElementById('no_result').classList.remove('hidden');
         }
