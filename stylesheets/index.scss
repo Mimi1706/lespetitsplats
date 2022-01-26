@@ -113,9 +113,10 @@ header{
 
                 .dropdown{
                     @include button_filter_style;
+                    width: 10em;
                     
                     &:focus {
-                        width: 35vw;
+                        width: 45vw;
                         border-radius: 0.2em 0.2em 0 0;
                     }
 
@@ -187,7 +188,7 @@ header{
 
                     // Tous les éléments à l'intérieur des filtres
                     .dropdown-col{ 
-                        width: 35vw;
+                        width: 45vw;
                         flex-wrap: wrap;
                         background-color:inherit;
                         padding:1em 0em;
