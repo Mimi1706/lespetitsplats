@@ -19,7 +19,7 @@
 ////////////// COULEURS //////////////
 $ingredient : #3282F7;
 $appareil : #68D9A4;
-$ustensil : #ED6454;
+$ustensile : #ED6454;
 
 
 ////////////// VERSION DESKTOP //////////////
@@ -77,7 +77,7 @@ header{
         #all_tags{
             margin-bottom: 0.5em;
 
-            #ingredient_tag, #appareil_tag, #ustensil_tag{
+            #ingredient_tag, #appareil_tag, #ustensile_tag{
                 width: auto;
                 padding: 0.5em 0em 0.5em 1em;
                 color: white;
@@ -99,8 +99,8 @@ header{
                 background-color: $appareil;
             }
 
-            #ustensil_tag{
-                background-color: $ustensil;
+            #ustensile_tag{
+                background-color: $ustensile;
             }
         }
 
@@ -134,8 +134,8 @@ header{
                     background-color: $appareil;
                 }
 
-                #ustensils_filter{
-                    background-color: $ustensil;
+                #ustensiles_filter{
+                    background-color: $ustensile;
                 }
 
                 .menu_arrow{
@@ -169,8 +169,8 @@ header{
                     height: 0;
                 }
 
-                #ustensils_dropdown_menu{
-                    background-color: $ustensil;
+                #ustensiles_dropdown_menu{
+                    background-color: $ustensile;
                     height: 0;
                 }
 
