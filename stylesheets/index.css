@@ -44,7 +44,7 @@ header .container nav #search_wrapper .fa-search {
 header .container #all_tags {
   margin-bottom: 0.5em;
 }
-header .container #all_tags #ingredient_tag, header .container #all_tags #appareil_tag, header .container #all_tags #ustensil_tag {
+header .container #all_tags #ingredient_tag, header .container #all_tags #appareil_tag, header .container #all_tags #ustensile_tag {
   width: auto;
   padding: 0.5em 0em 0.5em 1em;
   color: white;
@@ -62,7 +62,7 @@ header .container #all_tags #ingredient_tag {
 header .container #all_tags #appareil_tag {
   background-color: #68D9A4;
 }
-header .container #all_tags #ustensil_tag {
+header .container #all_tags #ustensile_tag {
   background-color: #ED6454;
 }
 header .container #dropdown_filters .filter_dropdown {
@@ -90,7 +90,7 @@ header .container #dropdown_filters .filter_dropdown #ingredients_filter {
 header .container #dropdown_filters .filter_dropdown #appareil_filter {
   background-color: #68D9A4;
 }
-header .container #dropdown_filters .filter_dropdown #ustensils_filter {
+header .container #dropdown_filters .filter_dropdown #ustensiles_filter {
   background-color: #ED6454;
 }
 header .container #dropdown_filters .filter_dropdown .menu_arrow {
@@ -119,7 +119,7 @@ header .container #dropdown_filters .filter_dropdown #appareil_dropdown_menu {
   background-color: #68D9A4;
   height: 0;
 }
-header .container #dropdown_filters .filter_dropdown #ustensils_dropdown_menu {
+header .container #dropdown_filters .filter_dropdown #ustensiles_dropdown_menu {
   background-color: #ED6454;
   height: 0;
 }

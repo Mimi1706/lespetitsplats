@@ -34,18 +34,18 @@ function capitalizeFirstLetter(string) {
 
 // Tableaux vides de stockage temporaire
 let appareilArray = [];
-let ustensilArray = [];
+let ustensileArray = [];
 let ingredientArray = [];
 
-// Ajout de toutes les suggestions d'appareils/d'ustensils/d'ingredients dans leur filtre respectif
+// Ajout de toutes les suggestions d'appareils/d'ustensiles/d'ingredients dans leur filtre respectif
 recipes.forEach(recipe =>{
     // Insère chaque appareil dans le tableau 'appareilArray'
     appareilArray.push(capitalizeFirstLetter(recipe.appliance.toString().toLowerCase()));
 
-    // Récupère tous les ustensils de chaque recette et les insère dans le tableau 'ustensilArray'
-    let allUstensils = recipe.ustensils.flat();
-    allUstensils.forEach(ustensil =>{
-        ustensilArray.push(capitalizeFirstLetter(ustensil.toLowerCase()));
+    // Récupère tous les ustensiles de chaque recette et les insère dans le tableau 'ustensileArray'
+    let allustensiles = recipe.ustensils.flat();
+    allustensiles.forEach(ustensile =>{
+        ustensileArray.push(capitalizeFirstLetter(ustensile.toLowerCase()));
     });
 });
 
@@ -57,7 +57,7 @@ document.querySelectorAll('#recipe_card_ingredient').forEach(ingredient => {
 // On enlève les doublons des tableaux et on les insère dans des nouveaux tableaux
 let ingredientArrayUnique = [...new Set(ingredientArray)];
 let appareilArrayUnique = [...new Set(appareilArray)];
-let ustensilArrayUnique = [...new Set(ustensilArray)];
+let ustensileArrayUnique = [...new Set(ustensileArray)];
 
 // Ajout des éléments dans leur filtre respectif
 for (let i = 0; i< ingredientArrayUnique.length; i++){
@@ -70,9 +70,9 @@ for (let i = 0; i< appareilArrayUnique.length; i++){
     appareilsList.append(`<a class="dropdown-item" id="appareil_item">`+appareilArrayUnique[i]+`</a>`);
 }
 
-for (let i = 0; i< ustensilArrayUnique.length; i++){
-    let ustensilsList = $('#ustensils');
-    ustensilsList.append(`<a class="dropdown-item" id="ustensil_item">`+ustensilArrayUnique[i]+`</a>`);
+for (let i = 0; i< ustensileArrayUnique.length; i++){
+    let ustensilesList = $('#ustensiles');
+    ustensilesList.append(`<a class="dropdown-item" id="ustensile_item">`+ustensileArrayUnique[i]+`</a>`);
 }
 
 /////////////// FONCTIONS DE TRI ///////////////
@@ -173,34 +173,34 @@ function filtersFilter (tagsArray){
             });
         }
 
-        // Filtrage par rapport aux tags ustensils
-        // Il y a plusieurs ustensils par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensil des hypothétiques plusieurs ustensils de la liste de tags 
+        // Filtrage par rapport aux tags ustensiles
+        // Il y a plusieurs ustensiles par recettes, ce qui peut fausser le tri en ajoutant le marqueur de vérification sur une recette qui ne possèderait pourtant qu'un seul ustensile des hypothétiques plusieurs ustensiles de la liste de tags 
 
-        // On ajoute tous les tag ustensils dans un tableau
-        let ustensilTagArray = [];
-        document.querySelectorAll('#ustensil_tag').forEach(ustensilTag => {
-            ustensilTagArray.push(ustensilTag.textContent.toLowerCase());
+        // On ajoute tous les tag ustensiles dans un tableau
+        let ustensileTagArray = [];
+        document.querySelectorAll('#ustensile_tag').forEach(ustensileTag => {
+            ustensileTagArray.push(ustensileTag.textContent.toLowerCase());
         });
 
         // Fonction qui vérifie que tous les éléments d'un tableau sont également contenus dans un autre tableau
         let compareArrays = (arr, target) => target.every(v => arr.includes(v));
 
-        if(document.querySelector('#all_tags').contains(document.querySelector('#ustensil_tag'))){
+        if(document.querySelector('#all_tags').contains(document.querySelector('#ustensile_tag'))){
 
-            if(compareArrays(recipe.ustensils.map(ustensil => ustensil.toLowerCase()),ustensilTagArray)){
+            if(compareArrays(recipe.ustensils.map(ustensile => ustensile.toLowerCase()),ustensileTagArray)){
 
                 document.querySelectorAll('#recipe_card').forEach(card => {
 
                     if (card.dataset.id == recipe.id.toString()){
-                        card.classList.add('ustensil_filter_on');
+                        card.classList.add('ustensile_filter_on');
                     }
                 });
             } 
 
-        // S'il n'y a pas de tag d'ustensil sélectionné, on ajoute automatiquement le marqueur de validation
+        // S'il n'y a pas de tag d'ustensile sélectionné, on ajoute automatiquement le marqueur de validation
         } else {
             document.querySelectorAll('#recipe_card').forEach(card => {
-                card.classList.add('ustensil_filter_on');
+                card.classList.add('ustensile_filter_on');
             });
         }
     }
@@ -209,16 +209,16 @@ function filtersFilter (tagsArray){
     document.querySelectorAll('#recipe_card').forEach(card => {
 
         // Si la carte recette ne possède pas les 3 marqueurs de validation, on la cache 
-        if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensil_filter_on'))){
+        if(!(card.classList.contains('ingredient_filter_on') && card.classList.contains('appareil_filter_on') && card.classList.contains('ustensile_filter_on'))){
             
             card.classList.add('hidden');
             card.classList.remove('ingredient_filter_on');
             card.classList.remove('appareil_filter_on');
-            card.classList.remove('ustensil_filter_on');
+            card.classList.remove('ustensile_filter_on');
         } else {
             card.classList.remove('ingredient_filter_on');
             card.classList.remove('appareil_filter_on');
-            card.classList.remove('ustensil_filter_on');
+            card.classList.remove('ustensile_filter_on');
         }
     });
 }
@@ -408,6 +408,11 @@ ingredientList.forEach(ingredientItem => {
                         recipeCards[i].classList.remove('hidden');
                     }
                 }
+
+                // S'assure que le message de non résultat se cache s'il y a des recettes présentes
+                if(allCardsRecipesArray.length != 0){
+                    document.getElementById('no_result').classList.add('hidden');
+                }
             });
         });
     });
@@ -550,22 +555,27 @@ appareilList.forEach(appareilItem => {
                         recipeCards[i].classList.remove('hidden');
                     }
                 }
+
+                // S'assure que le message de non résultat se cache s'il y a des recettes présentes
+                if(allCardsRecipesArray.length != 0){
+                    document.getElementById('no_result').classList.add('hidden');
+                }
             });
         });
     });
 });
 
-// FILTRE USTENSIL
-// Gestion de l'affichage des élements de la liste du filtre d'ustensil
-let ustensilFilter = document.querySelector('#ustensils_filter');
-ustensilFilter.addEventListener('click', e =>{
+// FILTRE ustensile
+// Gestion de l'affichage des élements de la liste du filtre d'ustensile
+let ustensileFilter = document.querySelector('#ustensiles_filter');
+ustensileFilter.addEventListener('click', e =>{
 
     // Cache tous les élements de la liste du filtre d'appareil
-    document.querySelectorAll('#ustensil_item').forEach(ustensilItem => {
-        ustensilItem.classList.add('hidden');
+    document.querySelectorAll('#ustensile_item').forEach(ustensileItem => {
+        ustensileItem.classList.add('hidden');
 
         // Suppression du marqueur pour la barre de recherche du filtre
-        ustensilItem.classList.remove('ustensil_item_on');
+        ustensileItem.classList.remove('ustensile_item_on');
     });
 
     // Récupération de l'id des recettes présentes
@@ -579,17 +589,17 @@ ustensilFilter.addEventListener('click', e =>{
             
             for (let recipe of recipes){
 
-                // Vérifie quel ustensil est lié à la recette via son id dans le fichier recipe.js
+                // Vérifie quel ustensile est lié à la recette via son id dans le fichier recipe.js
                 if(recipe.id == card.dataset.id){
 
-                    // Les ustensils qui correspondent à la recettes sont ré-affichés
-                    document.querySelectorAll('#ustensil_item').forEach(ustensilItem => {
+                    // Les ustensiles qui correspondent à la recettes sont ré-affichés
+                    document.querySelectorAll('#ustensile_item').forEach(ustensileItem => {
 
-                        if(recipe.ustensils.includes(ustensilItem.textContent.toLowerCase())){
-                            ustensilItem.classList.remove('hidden');
+                        if(recipe.ustensils.includes(ustensileItem.textContent.toLowerCase())){
+                            ustensileItem.classList.remove('hidden');
 
                             // Ajout d'un marqueur pour la barre de recherche du filtre
-                            ustensilItem.classList.add('ustensil_item_on');
+                            ustensileItem.classList.add('ustensile_item_on');
                         }
                     });
                 } 
@@ -598,36 +608,36 @@ ustensilFilter.addEventListener('click', e =>{
     });
 });
 
-// Barre de recherche du filtre d'ustensil
-ustensilFilter.onkeyup = (e)=>{
-    let userDataUstensil = e.target.value; // Saisie de l'utilisateur
+// Barre de recherche du filtre d'ustensile
+ustensileFilter.onkeyup = (e)=>{
+    let userDataustensile = e.target.value; // Saisie de l'utilisateur
 
-    let ustensilFilter = document.querySelectorAll('#ustensil_item');
-    ustensilFilter.forEach(ustensil =>{
+    let ustensileFilter = document.querySelectorAll('#ustensile_item');
+    ustensileFilter.forEach(ustensile =>{
 
-        // Si l'élément de la liste du filtre n'est pas sélectionné comme tag et qu'il possède le marqueur 'iustensil_item_on'
-        if (!ustensil.classList.contains('on_tag') && ustensil.classList.contains('ustensil_item_on')){
-            ustensil.classList.remove('hidden');
+        // Si l'élément de la liste du filtre n'est pas sélectionné comme tag et qu'il possède le marqueur 'iustensile_item_on'
+        if (!ustensile.classList.contains('on_tag') && ustensile.classList.contains('ustensile_item_on')){
+            ustensile.classList.remove('hidden');
         }
 
         // Les élements qui ne correspondent pas avec la saisie de l'utilisateur sont cachés
-        if(!ustensil.textContent.toLowerCase().includes(userDataUstensil.toLowerCase())){
-            ustensil.classList.add('hidden');
+        if(!ustensile.textContent.toLowerCase().includes(userDataustensile.toLowerCase())){
+            ustensile.classList.add('hidden');
         } 
     });
 };
 
-// Ajout d'un tag visuel au clic sur un élement de la liste du filtre d'ustensil
-let ustensilList = document.querySelectorAll('#ustensil_item');
-ustensilList.forEach(ustensilItem => {
-    ustensilItem.addEventListener('click', e =>{
+// Ajout d'un tag visuel au clic sur un élement de la liste du filtre d'ustensile
+let ustensileList = document.querySelectorAll('#ustensile_item');
+ustensileList.forEach(ustensileItem => {
+    ustensileItem.addEventListener('click', e =>{
 
-        // le marqueur 'on_tag' masque l'ustensil sélectionné de la liste du filtre
-        ustensilItem.classList.add('on_tag');
+        // le marqueur 'on_tag' masque l'ustensile sélectionné de la liste du filtre
+        ustensileItem.classList.add('on_tag');
 
         // au clic sur un élément de la liste, un tag visuel est généré et stocké dans la liste des tags
         let tagsList = $('#all_tags');
-        tagsList.append(`<div id="ustensil_tag">`+ustensilItem.textContent+`<a id="close_ustensil_tag"><i class="far fa-times-circle"></a></i><div>`);
+        tagsList.append(`<div id="ustensile_tag">`+ustensileItem.textContent+`<a id="close_ustensile_tag"><i class="far fa-times-circle"></a></i><div>`);
 
         // Récupère l'id des recettes présentes dans la page
         let allCardsRecipesArray = [];
@@ -635,15 +645,15 @@ ustensilList.forEach(ustensilItem => {
     
         for (let recipe of recipes){
 
-            // Compare l'id des recettes présentes avec celles des recettes du fichier recipe.js afin de retrouver le/les ustensil(s) respectif(s) de chaque recette 
-            if(allCardsRecipesArray.includes(recipe.id.toString()) && recipe.ustensils.join(' ').toLowerCase().includes(ustensilItem.textContent.toLowerCase())){
+            // Compare l'id des recettes présentes avec celles des recettes du fichier recipe.js afin de retrouver le/les ustensile(s) respectif(s) de chaque recette 
+            if(allCardsRecipesArray.includes(recipe.id.toString()) && recipe.ustensils.join(' ').toLowerCase().includes(ustensileItem.textContent.toLowerCase())){
 
                 // Récupère toutes les cartes de recettes
                 document.querySelectorAll('#recipe_card').forEach(card => {
 
-                    // Ajoute le marqueur 'ustensil_filter_on'
+                    // Ajoute le marqueur 'ustensile_filter_on'
                     if (card.dataset.id == recipe.id.toString()){
-                        card.classList.add('ustensil_filter_on');
+                        card.classList.add('ustensile_filter_on');
                     }
                 });
             }
@@ -653,21 +663,21 @@ ustensilList.forEach(ustensilItem => {
         document.querySelectorAll('#recipe_card').forEach(card => {
 
             // Utilisation du marqueur pour trier les recettes qui le possèdent
-            if (!card.classList.contains('ustensil_filter_on')){
+            if (!card.classList.contains('ustensile_filter_on')){
                 card.classList.add('hidden');
             } else {
-                card.classList.remove('ustensil_filter_on');
+                card.classList.remove('ustensile_filter_on');
             }
         });
 
         // Bouton de fermeture des tags
-        document.querySelectorAll('#close_ustensil_tag').forEach(closeTag => {
+        document.querySelectorAll('#close_ustensile_tag').forEach(closeTag => {
             closeTag.addEventListener('click', e =>{
 
                 closeTag.parentNode.remove(); // Efface le tag visuel de la liste de tags 
 
                 // Ré-affiche l'élément dans la liste de filtre
-                ustensilItem.classList.remove('on_tag');
+                ustensileItem.classList.remove('on_tag');
 
                 // Affiche toutes les recettes pour le tri
                 let recipeCards = document.querySelectorAll('#recipe_card');
@@ -692,6 +702,11 @@ ustensilList.forEach(ustensilItem => {
                     for(let i =0; i<recipeCards.length;i++){
                         recipeCards[i].classList.remove('hidden');
                     }
+                }
+
+                // S'assure que le message de non résultat se cache s'il y a des recettes présentes
+                if(allCardsRecipesArray.length != 0){
+                    document.getElementById('no_result').classList.add('hidden');
                 }
             });
         });
