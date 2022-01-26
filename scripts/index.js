@@ -565,7 +565,7 @@ appareilList.forEach(appareilItem => {
     });
 });
 
-// FILTRE ustensile
+// FILTRE USTENSILE
 // Gestion de l'affichage des élements de la liste du filtre d'ustensile
 let ustensileFilter = document.querySelector('#ustensiles_filter');
 ustensileFilter.addEventListener('click', e =>{
