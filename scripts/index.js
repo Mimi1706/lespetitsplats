@@ -4,8 +4,7 @@ import { recipes } from "./recipes.js";
 let recipesSection = $('#recipe_deck');
 recipes.forEach(recipe => {
 
-    recipesSection.append(`
-    <div class="col-lg-4 col-md-6 col-sm-12" id="recipe_card" data-id=${recipe.id}>
+    recipesSection.append(`<div class="col-lg-4 col-md-6 col-sm-12" id="recipe_card" data-id=${recipe.id}>
         <div id="recipe_image"><img src="" class="card-img-top" alt=""></div>
         <div class="card-body">
             <div class="row d-flex align-items-center">
