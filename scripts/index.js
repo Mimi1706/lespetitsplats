@@ -17,8 +17,7 @@ recipes.forEach(recipe => {
                 <p class="col-7" id="recipe_description">${recipe.description}</p>
             </div>
         </div>
-    </div>
-    `);
+    </div>`);
 
     // Ajout des ingrédients de chaque recette
     recipe.ingredients.forEach(ingredient =>{
@@ -700,4 +699,3 @@ ustensileList.forEach(ustensileItem => {
         });
     });
 });
-
