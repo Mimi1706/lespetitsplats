@@ -74,9 +74,10 @@ header .container #dropdown_filters .filter_dropdown .dropdown {
   text-align: left;
   border: none;
   padding: 1em;
+  width: 10em;
 }
 header .container #dropdown_filters .filter_dropdown .dropdown:focus {
-  width: 35vw;
+  width: 45vw;
   border-radius: 0.2em 0.2em 0 0;
 }
 header .container #dropdown_filters .filter_dropdown .dropdown:focus + .menu_arrow {
@@ -133,7 +134,7 @@ header .container #dropdown_filters .filter_dropdown .dropdown-multicol {
   padding-bottom: 1em;
 }
 header .container #dropdown_filters .filter_dropdown .dropdown-multicol .dropdown-col {
-  width: 35vw;
+  width: 45vw;
   flex-wrap: wrap;
   background-color: inherit;
   padding: 1em 0em;
