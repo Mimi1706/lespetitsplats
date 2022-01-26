@@ -396,6 +396,11 @@ ingredientList.forEach(ingredientItem => {
                         recipeCards[i].classList.remove('hidden');
                     }
                 }
+
+                // S'assure que le message de non résultat se cache s'il y a des recettes présentes
+                if(allCardsRecipesArray.length != 0){
+                    document.getElementById('no_result').classList.add('hidden');
+                }
             });
         });
     });
@@ -537,6 +542,11 @@ appareilList.forEach(appareilItem => {
                     for(let i =0; i<recipeCards.length;i++){
                         recipeCards[i].classList.remove('hidden');
                     }
+                }
+
+                // S'assure que le message de non résultat se cache s'il y a des recettes présentes
+                if(allCardsRecipesArray.length != 0){
+                    document.getElementById('no_result').classList.add('hidden');
                 }
             });
         });
@@ -680,6 +690,11 @@ ustensileList.forEach(ustensileItem => {
                     for(let i =0; i<recipeCards.length;i++){
                         recipeCards[i].classList.remove('hidden');
                     }
+                }
+
+                // S'assure que le message de non résultat se cache s'il y a des recettes présentes
+                if(allCardsRecipesArray.length != 0){
+                    document.getElementById('no_result').classList.add('hidden');
                 }
             });
         });
