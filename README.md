@@ -11,4 +11,4 @@ L'introduction aux algorigrammes permet également une familiarisation avec la n
 
 Après avoir édité des livres de cuisine pendant plusieurs années, l’entreprise "Les petits plats" a décidé de se lancer dans un nouveau projet : réaliser son propre site de recettes de cuisine à l’instar de Marmiton ou 750g
 
-![GameOn visuals on all devices](https://github.com/Mimi1706/HanNguyen_7_131221/blob/main/Les%20petits%20plats%20visuals.jpg?raw=true)
+![Visuals on all devices](https://github.com/Mimi1706/HanNguyen_7_131221/blob/main/Les%20petits%20plats%20visuals.jpg?raw=true)
